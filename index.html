@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Dali Emploi en CEM - مولد جداول الاستعمال الزمن</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        .schedule-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        .schedule-table th, .schedule-table td {
+            border: 2px solid #333;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            min-height: 40px;
+            color: black;
+        }
+        .schedule-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            color: black;
+        }
+        .subject-slot {
+            background-color: #90EE90;
+            color: black;
+            font-size: 12px;
+        }
+        .remedial-slot {
+            background-color: #FFFF99;
+            color: black;
+            font-size: 12px;
+        }
+        .empty-slot {
+            background-color: white;
+            color: black;
+        }
+        .pedagogical-slot {
+            background-color: #FFE4B5;
+            color: black;
+            font-size: 12px;
+        }
+        .break-slot {
+            background-color: #E0E0E0;
+            color: black;
+        }
+        .directed-work-slot {
+            background-color: #FFD700;
+            color: black;
+            font-size: 12px;
+        }
+        .practical-work-slot {
+            background-color: #87CEEB;
+            color: black;
+            font-size: 12px;
+        }
+        .group-slot {
+            position: relative;
+            padding: 2px;
+        }
+        .group-half {
+            height: 50%;
+            padding: 2px;
+            font-size: 10px;
+        }
+        .group-f1 {
+            background-color: #e6f7ff;
+            border-bottom: 1px solid #ccc;
+        }
+        .group-f2 {
+            background-color: #fff2e6;
+        }
+        @media print {
+            .no-print { display: none; }
+            .schedule-table { page-break-inside: avoid; }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE'
+                    }
+                }
+            }
+        }
+        
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-primary mb-2">AI Dali Emploi en CEM</h1>
+            <p class="text-lg text-gray-600 dark:text-gray-400">مولد جداول الاستعمال الزمن للمؤسسات المتوسطة</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex flex-wrap justify-center mb-8 space-x-2 space-x-reverse">
+            <button onclick="showTab('setup')" id="setupTab" class="px-6 py-3 bg-primary text-white rounded-lg mx-1 mb-2 hover:bg-primary/90 transition-colors">
+                إعداد البيانات
+            </button>
+            <button onclick="showTab('institution')" id="institutionTab" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg mx-1 mb-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                جدول المؤسسة
+            </button>
+            <button onclick="showTab('students')" id="studentsTab" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg mx-1 mb-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                جداول التلاميذ
+            </button>
+            <button onclick="showTab('teachers')" id="teachersTab" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg mx-1 mb-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                جداول الأساتذة
+            </button>
+        </div>
+
+        <!-- Setup Tab -->
+        <div id="setupContent" class="tab-content">
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-4">إعداد البيانات الأساسية</h2>
+                
+                <!-- Institution Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">اسم المؤسسة</label>
+                        <input type="text" id="institutionName" class="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="متوسطة الشهيد...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">العام الدراسي</label>
+                        <input type="text" id="academicYear" class="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="2024-2025" value="2024-2025">
+                    </div>
+                </div>
+
+                <!-- Levels and Classes -->
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-4">المستويات وعدد الأقسام</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">السنة الأولى متوسط</label>
+                            <input type="number" id="level1Classes" min="0" max="10" class="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="عدد الأقسام" onchange="updateTotalClasses()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">السنة الثانية متوسط</label>
+                            <input type="number" id="level2Classes" min="0" max="10" class="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="عدد الأقسام" onchange="updateTotalClasses()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">السنة الثالثة متوسط</label>
+                            <input type="number" id="level3Classes" min="0" max="10" class="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="عدد الأقسام" onchange="updateTotalClasses()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">السنة الرابعة متوسط</label>
+                            <input type="number" id="level4Classes" min="0" max="10" class="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="عدد الأقسام" onchange="updateTotalClasses()">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="text-lg font-bold">العدد الكلي للأقسام: <span id="totalClasses" class="text-primary">0</span></div>
+                    </div>
+                </div>
+
+                <!-- Teachers Setup -->
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-4">إضافة الأساتذة والمواد</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                        <div>
+                            <input type="text" id="teacherName" class="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="اسم الأستاذ">
+                        </div>
+                        <div>
+                            <select id="teacherSubject" class="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <option value="">اختر المادة</option>
+                                <option value="رياضيات">رياضيات</option>
+                                <option value="عربية">لغة عربية</option>
+                                <option value="فرنسية">لغة فرنسية</option>
+                                <option value="انجليزية">لغة إنجليزية</option>
+                                <option value="علوم طبيعية">علوم طبيعية</option>
+                                <option value="فيزياء">فيزياء</option>
+                                <option value="تاريخ وجغرافيا">تاريخ وجغرافيا</option>
+                                <option value="تربية مدنية">تربية مدنية</option>
+                                <option value="تربية إسلامية">تربية إسلامية</option>
+                                <option value="رياضة">تربية بدنية</option>
+                                <option value="إعلام آلي">إعلام آلي</option>
+                                <option value="تربية فنية">تربية فنية</option>
+                                <option value="تربية موسيقية">تربية موسيقية</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" id="teacherClasses" class="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="الأقسام (مثل: 1م1,1م2,2م1)">
+                        </div>
+                        <div>
+                            <input type="number" id="weeklyHours" min="1" max="25" class="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="ساعات أسبوعية">
+                        </div>
+                        <div>
+                            <button onclick="addTeacher()" class="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                                إضافة
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Teachers Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-gray-300 dark:border-gray-600">
+                            <thead>
+                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">الأستاذ</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">المادة</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">الأقسام</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">ساعات أسبوعية</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teachersTableBody">
+                                <!-- Teachers will be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Generate Buttons -->
+                <div class="text-center space-y-4">
+                    <div>
+                        <button onclick="loadMyInstitution()" class="px-6 py-3 bg-green-600 text-white rounded-lg text-lg font-bold hover:bg-green-700 transition-colors mx-2">
+                            🏫 تحميل بيانات مؤسستي
+                        </button>
+                        <button onclick="resetData()" class="px-6 py-3 bg-gray-500 text-white rounded-lg text-lg font-bold hover:bg-gray-600 transition-colors mx-2">
+                            🔄 إعادة تعيين
+                        </button>
+                    </div>
+                    <div>
+                        <button onclick="generateSchedules()" class="px-8 py-3 bg-primary text-white rounded-lg text-lg font-bold hover:bg-primary/90 transition-colors">
+                            ⚡ توليد جميع الجداول
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Institution Schedule Tab -->
+        <div id="institutionContent" class="tab-content hidden">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold mb-4">جدول استعمال الزمن العام للمؤسسة</h2>
+                <div class="space-x-4 space-x-reverse no-print">
+                    <button onclick="copyTable('institutionSchedule')" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">نسخ الجدول</button>
+                    <button onclick="exportToPDF('institutionSchedule')" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">تصدير PDF</button>
+                    <button onclick="window.print()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">طباعة</button>
+                </div>
+            </div>
+            <div id="institutionSchedule" class="overflow-x-auto">
+                <!-- Institution schedule will be generated here -->
+            </div>
+        </div>
+
+        <!-- Students Schedule Tab -->
+        <div id="studentsContent" class="tab-content hidden">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold mb-4">جداول استعمال الزمن للتلاميذ</h2>
+                <div class="mb-4">
+                    <select id="classSelector" onchange="showClassSchedule()" class="px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="">اختر القسم</option>
+                    </select>
+                </div>
+                <div class="space-x-4 space-x-reverse no-print">
+                    <button onclick="copyTable('studentsSchedule')" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">نسخ الجدول</button>
+                    <button onclick="exportToPDF('studentsSchedule')" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">تصدير PDF</button>
+                    <button onclick="window.print()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">طباعة</button>
+                </div>
+            </div>
+            <div id="studentsSchedule" class="overflow-x-auto">
+                <!-- Student schedules will be generated here -->
+            </div>
+        </div>
+
+        <!-- Teachers Schedule Tab -->
+        <div id="teachersContent" class="tab-content hidden">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold mb-4">جداول استعمال الزمن للأساتذة</h2>
+                <div class="mb-4">
+                    <select id="teacherSelector" onchange="showTeacherSchedule()" class="px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="">اختر الأستاذ</option>
+                    </select>
+                </div>
+                <div class="space-x-4 space-x-reverse no-print">
+                    <button onclick="copyTable('teachersSchedule')" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">نسخ الجدول</button>
+                    <button onclick="exportToPDF('teachersSchedule')" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">تصدير PDF</button>
+                    <button onclick="window.print()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">طباعة</button>
+                </div>
+            </div>
+            <div id="teachersSchedule" class="overflow-x-auto">
+                <!-- Teacher schedules will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============= بيانات التطبيق =============
+        let teachers = [];
+        let institutionData = {};
+        let schedules = {
+            institution: {},
+            students: {},
+            teachers: {}
+        };
+
+        const timeSlots = ['08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00', '13:00-14:00', '14:00-15:00', '15:00-16:00'];
+        const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+        
+        // المواد الأساسية للاستدراك والأعمال الموجهة
+        const coreSubjects = ['رياضيات', 'عربية', 'فرنسية', 'انجليزية'];
+        const scienceSubjects = ['علوم طبيعية', 'فيزياء'];
+        
+        // الأيام البيداغوجية
+        const pedagogicalDays = {
+            'الأحد': ['تاريخ وجغرافيا', 'تربية مدنية'],
+            'الاثنين': ['انجليزية', 'تربية إسلامية'],
+            'الثلاثاء': ['فرنسية', 'فيزياء'],
+            'الأربعاء': ['عربية', 'علوم طبيعية', 'إعلام آلي'],
+            'الخميس': ['رياضيات', 'تربية فنية']
+        };
+
+        // ساعات المواد الأسبوعية
+        const subjectHours = {
+            'رياضيات': { '1': 4, '2': 4, '3': 5, '4': 5 },
+            'عربية': { '1': 4, '2': 4, '3': 4, '4': 4 },
+            'فرنسية': { '1': 3, '2': 3, '3': 3, '4': 3 },
+            'انجليزية': { '1': 3, '2': 3, '3': 3, '4': 3 },
+            'علوم طبيعية': { '1': 3, '2': 3, '3': 3, '4': 3 },
+            'فيزياء': { '1': 2, '2': 2, '3': 2, '4': 2 },
+            'تاريخ وجغرافيا': { '1': 2, '2': 2, '3': 2, '4': 2 },
+            'تربية مدنية': { '1': 1, '2': 1, '3': 1, '4': 1 },
+            'تربية إسلامية': { '1': 2, '2': 2, '3': 2, '4': 2 },
+            'رياضة': { '1': 2, '2': 2, '3': 2, '4': 2 },
+            'إعلام آلي': { '1': 1, '2': 1, '3': 1, '4': 1 },
+            'تربية فنية': { '1': 1, '2': 1, '3': 1, '4': 1 }
+        };
+
+        // ============= إدارة ألسنة التبويب =============
+        function showTab(tabName) {
+            // إخفاء جميع المحتويات
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // Reset all tab buttons
+            document.querySelectorAll('[id$="Tab"]').forEach(tab => {
+                tab.className = tab.className.replace('bg-primary text-white', 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName + 'Content').classList.remove('hidden');
+            
+            // Activate selected tab button
+            const activeTab = document.getElementById(tabName + 'Tab');
+            activeTab.className = activeTab.className.replace('bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300', 'bg-primary text-white');
+        }
+
+        // ============= الوظائف الأساسية =============
+        function updateTotalClasses() {
+            const level1 = parseInt(document.getElementById('level1Classes').value) || 0;
+            const level2 = parseInt(document.getElementById('level2Classes').value) || 0;
+            const level3 = parseInt(document.getElementById('level3Classes').value) || 0;
+            const level4 = parseInt(document.getElementById('level4Classes').value) || 0;
+            
+            const total = level1 + level2 + level3 + level4;
+            document.getElementById('totalClasses').textContent = total;
+        }
+
+        function addTeacher() {
+            const name = document.getElementById('teacherName').value.trim();
+            const subject = document.getElementById('teacherSubject').value;
+            const classes = document.getElementById('teacherClasses').value.trim();
+            const hours = parseInt(document.getElementById('weeklyHours').value);
+
+            if (!name || !subject || !classes || !hours) {
+                showAlert('يرجى ملء جميع الحقول');
+                return;
+            }
+
+            const teacher = {
+                id: Date.now(),
+                name,
+                subject,
+                classes: classes.split(',').map(c => c.trim()),
+                weeklyHours: hours
+            };
+
+            teachers.push(teacher);
+            updateTeachersTable();
+            clearTeacherForm();
+        }
+
+        function updateTeachersTable() {
+            const tbody = document.getElementById('teachersTableBody');
+            tbody.innerHTML = '';
+
+            teachers.forEach(teacher => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${teacher.name}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${teacher.subject}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${teacher.classes.join(', ')}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${teacher.weeklyHours}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                        <button onclick="removeTeacher(${teacher.id})" class="px-2 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 transition-colors">حذف</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            updateSelectors();
+        }
+
+        function removeTeacher(id) {
+            showConfirmDialog('هل أنت متأكد من حذف هذا الأستاذ؟', () => {
+                teachers = teachers.filter(t => t.id !== id);
+                updateTeachersTable();
+            });
+        }
+
+        function clearTeacherForm() {
+            document.getElementById('teacherName').value = '';
+            document.getElementById('teacherSubject').value = '';
+            document.getElementById('teacherClasses').value = '';
+            document.getElementById('weeklyHours').value = '';
+        }
+
+        function generateSchedules() {
+            if (teachers.length === 0) {
+                showAlert('يرجى إضافة أساتذة أولاً');
+                return;
+            }
+
+            // جمع بيانات المؤسسة
+            institutionData = {
+                name: document.getElementById('institutionName').value || 'متوسطة غير محددة',
+                year: document.getElementById('academicYear').value || '2024-2025',
+                levels: {
+                    1: parseInt(document.getElementById('level1Classes').value) || 0,
+                    2: parseInt(document.getElementById('level2Classes').value) || 0,
+                    3: parseInt(document.getElementById('level3Classes').value) || 0,
+                    4: parseInt(document.getElementById('level4Classes').value) || 0
+                }
+            };
+
+            // إنشاء أسماء جميع الأقسام
+            const allClasses = [];
+            for (let level = 1; level <= 4; level++) {
+                for (let classNum = 1; classNum <= institutionData.levels[level]; classNum++) {
+                    allClasses.push(`${level}م${classNum}`);
+                }
+            }
+
+            // إنشاء الجداول
+            try {
+                const scheduleResult = generateIntelligentSchedules(allClasses);
+                if (scheduleResult.success) {
+                    schedules = scheduleResult.schedules;
+                    generateInstitutionSchedule();
+                    updateSelectors();
+                    showAlert('تم توليد جميع الجداول بنجاح! 🎉');
+                } else {
+                    showAlert('حدث خطأ في توليد الجداول: ' + scheduleResult.error);
+                }
+            } catch (error) {
+                console.error('خطأ في توليد الجداول:', error);
+                showAlert('حدث خطأ في توليد الجداول. يرجى المحاولة مرة أخرى.');
+            }
+        }
+
+        // ============= خوارزمية إنشاء الجداول =============
+        function generateIntelligentSchedules(allClasses) {
+            try {
+                const masterSchedule = createMasterSchedule(allClasses);
+                const result = scheduleMasterTimetable(masterSchedule, allClasses);
+                
+                if (result.success) {
+                    const newSchedules = {
+                        institution: generateInstitutionFromMaster(masterSchedule),
+                        students: generateStudentSchedulesFromMaster(masterSchedule, allClasses),
+                        teachers: generateTeacherSchedulesFromMaster(masterSchedule)
+                    };
+                    
+                    return { success: true, schedules: newSchedules };
+                } else {
+                    return { success: false, error: result.error };
+                }
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        function createMasterSchedule(allClasses) {
+            const masterSchedule = {};
+            
+            days.forEach(day => {
+                masterSchedule[day] = {};
+                timeSlots.forEach(slot => {
+                    masterSchedule[day][slot] = {
+                        classes: {},
+                        teachers: {}
+                    };
+                    
+                    allClasses.forEach(className => {
+                        masterSchedule[day][slot].classes[className] = {
+                            subject: '',
+                            teacher: '',
+                            type: 'empty',
+                            group: 'كامل'
+                        };
+                    });
+                });
+            });
+            
+            return masterSchedule;
+        }
+
+        function scheduleMasterTimetable(masterSchedule, allClasses) {
+            try {
+                markPedagogicalDaysInMaster(masterSchedule);
+                
+                // جدولة الحصص العادية
+                for (const className of allClasses) {
+                    const level = parseInt(className.charAt(0));
+                    
+                    const requiredSubjects = Object.keys(subjectHours).filter(subject => 
+                        subjectHours[subject][level.toString()] > 0
+                    );
+                    
+                    for (const subject of requiredSubjects) {
+                        const requiredHours = subjectHours[subject][level.toString()];
+                        if (!requiredHours) continue;
+                        
+                        const teacher = findTeacherForClass(subject, className);
+                        if (!teacher) continue;
+                        
+                        const result = scheduleSubjectForClass(
+                            masterSchedule, 
+                            className, 
+                            subject, 
+                            teacher, 
+                            requiredHours
+                        );
+                        
+                        if (!result.success) {
+                            console.warn(`فشل في جدولة ${subject} لـ ${className}: ${result.error}`);
+                        }
+                    }
+                }
+                
+                // إضافة حصص الاستدراك
+                addRemedialClassesToMaster(masterSchedule, allClasses);
+                
+                // إضافة الأعمال الموجهة
+                addDirectedWorkToMaster(masterSchedule, allClasses);
+                
+                // إضافة الأعمال التطبيقية
+                addPracticalWorkToMaster(masterSchedule, allClasses);
+                
+                return { success: true };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        function markPedagogicalDaysInMaster(masterSchedule) {
+            days.forEach(day => {
+                const freeDaySubjects = pedagogicalDays[day] || [];
+                
+                freeDaySubjects.forEach(subject => {
+                    timeSlots.forEach(slot => {
+                        if (slot !== '15:00-16:00') {
+                            masterSchedule[day][slot].teachers[subject] = 'pedagogical';
+                        }
+                    });
+                });
+            });
+        }
+
+        function findTeacherForClass(subject, className) {
+            return teachers.find(t => 
+                t.subject === subject && 
+                t.classes.includes(className)
+            );
+        }
+
+        function scheduleSubjectForClass(masterSchedule, className, subject, teacher, requiredHours) {
+            let hoursScheduled = 0;
+            const dailyHours = {};
+            
+            const shuffledDays = [...days].sort(() => Math.random() - 0.5);
+            
+            for (const day of shuffledDays) {
+                if (hoursScheduled >= requiredHours) break;
+                
+                const freeDaySubjects = pedagogicalDays[day] || [];
+                if (freeDaySubjects.includes(subject)) continue;
+                
+                const maxDaily = ['رياضيات', 'عربية', 'فرنسية'].includes(subject) ? 3 : 2;
+                if ((dailyHours[day] || 0) >= maxDaily) continue;
+                
+                let availableSlots = timeSlots.filter(slot => slot !== '15:00-16:00');
+                
+                if (subject === 'رياضيات') {
+                    availableSlots = ['08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00'];
+                }
+                
+                for (const slot of availableSlots) {
+                    if (hoursScheduled >= requiredHours) break;
+                    if ((dailyHours[day] || 0) >= maxDaily) break;
+                    
+                    if (canScheduleInMaster(masterSchedule, className, subject, teacher.name, day, slot)) {
+                        masterSchedule[day][slot].classes[className] = {
+                            subject: subject,
+                            teacher: teacher.name,
+                            type: 'subject',
+                            group: 'كامل'
+                        };
+                        
+                        masterSchedule[day][slot].teachers[teacher.name] = className;
+                        
+                        hoursScheduled++;
+                        dailyHours[day] = (dailyHours[day] || 0) + 1;
+                    }
+                }
+            }
+            
+            return { 
+                success: hoursScheduled >= Math.max(1, requiredHours - 1),
+                hoursScheduled 
+            };
+        }
+
+        function canScheduleInMaster(masterSchedule, className, subject, teacherName, day, slot) {
+            const classSlot = masterSchedule[day][slot].classes[className];
+            if (classSlot.type !== 'empty') return false;
+            
+            const teacherSlot = masterSchedule[day][slot].teachers[teacherName];
+            if (teacherSlot && teacherSlot !== 'pedagogical') return false;
+            
+            if (teacherSlot === 'pedagogical') return false;
+            
+            const daySchedule = masterSchedule[day];
+            const subjectAlreadyToday = Object.keys(daySchedule).some(timeSlot => {
+                const classData = daySchedule[timeSlot].classes[className];
+                return classData.subject === subject && classData.type === 'subject';
+            });
+            
+            if (subjectAlreadyToday && !['رياضيات', 'عربية'].includes(subject)) {
+                return false;
+            }
+            
+            const currentSlotIndex = timeSlots.indexOf(slot);
+            if (currentSlotIndex > 0) {
+                const previousSlot = timeSlots[currentSlotIndex - 1];
+                const prevClassData = daySchedule[previousSlot].classes[className];
+                if (prevClassData.teacher === teacherName && prevClassData.type === 'subject') {
+                    return false;
+                }
+            }
+            if (currentSlotIndex < timeSlots.length - 1) {
+                const nextSlot = timeSlots[currentSlotIndex + 1];
+                const nextClassData = daySchedule[nextSlot].classes[className];
+                if (nextClassData.teacher === teacherName && nextClassData.type === 'subject') {
+                    return false;
+                }
+            }
+            
+            if (wouldCreateLongGap(masterSchedule, teacherName, day, slot)) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        function wouldCreateLongGap(masterSchedule, teacherName, day, slot) {
+            const currentSlotIndex = timeSlots.indexOf(slot);
+            const daySchedule = masterSchedule[day];
+            
+            const teacherSlots = [];
+            timeSlots.forEach((timeSlot, index) => {
+                const assignment = daySchedule[timeSlot].teachers[teacherName];
+                if (assignment && assignment !== 'pedagogical') {
+                    teacherSlots.push(index);
+                }
+            });
+            
+            if (teacherSlots.length === 0) return false;
+            
+            const allSlots = [...teacherSlots, currentSlotIndex].sort((a, b) => a - b);
+            
+            for (let i = 0; i < allSlots.length - 1; i++) {
+                const gap = allSlots[i + 1] - allSlots[i] - 1;
+                
+                if (gap >= 2) {
+                    const gapStart = allSlots[i];
+                    const gapEnd = allSlots[i + 1];
+                    
+                    if (gapStart >= 4 && gap >= 2) {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
+
+        function addRemedialClassesToMaster(masterSchedule, allClasses) {
+            const remedialSlot = '15:00-16:00';
+            
+            allClasses.forEach(className => {
+                coreSubjects.forEach(subject => {
+                    const teacher = findTeacherForClass(subject, className);
+                    if (!teacher) return;
+                    
+                    for (const day of days) {
+                        const freeDaySubjects = pedagogicalDays[day] || [];
+                        if (freeDaySubjects.includes(subject)) continue;
+                        
+                        const classSlot = masterSchedule[day][remedialSlot].classes[className];
+                        const teacherSlot = masterSchedule[day][remedialSlot].teachers[teacher.name];
+                        
+                        if (classSlot.type === 'empty' && !teacherSlot) {
+                            masterSchedule[day][remedialSlot].classes[className] = {
+                                subject: `استدراك ${subject}`,
+                                teacher: teacher.name,
+                                type: 'remedial',
+                                group: 'كامل'
+                            };
+                            masterSchedule[day][remedialSlot].teachers[teacher.name] = className;
+                            break;
+                        }
+                    }
+                });
+            });
+        }
+
+        function addDirectedWorkToMaster(masterSchedule

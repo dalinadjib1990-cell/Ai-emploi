@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -6,28 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Dali Emploi en CEM</title>
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: #fff;
-  }
-  h1, h2 { text-align: center; color: #00e5ff; }
-  table { border-collapse: collapse; width: 90%; margin: 10px auto; }
-  th, td { border: 1px solid #444; padding: 8px; text-align: center; }
-  th { background-color: #222; }
-  tr:nth-child(even) { background-color: #1c1c1c; }
-  button { 
-    margin: 10px; padding: 10px 20px; 
-    background-color: #00e5ff; color: #000; 
-    border: none; cursor: pointer; border-radius: 5px; 
-  }
-  button:hover { background-color: #00b8cc; }
-  input { width: 90%; padding: 5px; border-radius: 3px; border: 1px solid #444; background-color: #222; color: #fff; }
-  .container { width: 95%; margin: 0 auto; }
-  .section { margin: 20px 0; }
-  .profile { display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
-  .profile img { width: 50px; height: 50px; border-radius: 50%; margin-right: 10px; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #fff;
+  direction: rtl;
+}
+h1, h2 { text-align: center; color: #00e5ff; }
+table { border-collapse: collapse; width: 90%; margin: 10px auto; }
+th, td { border: 1px solid #444; padding: 8px; text-align: center; }
+th { background-color: #222; }
+tr:nth-child(even) { background-color: #1c1c1c; }
+button { margin: 10px; padding: 10px 20px; background-color: #00e5ff; color: #000; border: none; cursor: pointer; border-radius: 5px; }
+button:hover { background-color: #00b8cc; }
+input { width: 90%; padding: 5px; border-radius: 3px; border: 1px solid #444; background-color: #222; color: #fff; }
+.container { width: 95%; margin: 0 auto; }
+.section { margin: 20px 0; }
+.profile { display: flex; align-items: center; justify-content: center; margin-bottom: 10px; flex-direction: row-reverse; }
+.profile img { width: 50px; height: 50px; border-radius: 50%; margin-left: 10px; }
+#generatedTables { margin-top: 20px; }
 </style>
 </head>
 <body>
@@ -35,13 +32,12 @@
 <h1>AI Dali Emploi en CEM</h1>
 
 <div class="profile">
-  <img id="profilePic" src="https://via.placeholder.com/50" alt="Profile">
   <input type="file" id="uploadPic">
+  <img id="profilePic" src="https://via.placeholder.com/50" alt="Profile">
 </div>
 
 <div class="container">
 
-  <!-- جدول الأساتذة -->
   <div class="section">
     <h2>أساتذة المؤسسة</h2>
     <table id="teachersTable">
@@ -59,7 +55,6 @@
     <button onclick="addTeacher()">إضافة أستاذ جديد</button>
   </div>
 
-  <!-- جدول الأقسام -->
   <div class="section">
     <h2>الأقسام حسب المستوى</h2>
     <table id="classesTable">
@@ -90,24 +85,27 @@
     </table>
   </div>
 
-  <!-- أزرار -->
   <div class="section" style="text-align:center;">
     <button onclick="fillSchool()">زر مؤسستي</button>
-    <button onclick="resetTables()">إعادة تعيين الجداول</button>
-    <button onclick="generateTimetable()">توليد الجداول</button>
+    <button onclick="resetTables()">إعادة التعيين</button>
+    <button onclick="generateSchoolTimetable()">توليد جدول المؤسسة</button>
+    <button onclick="generateTeachersTimetable()">توليد جدول الأساتذة</button>
+    <button onclick="printTables()">طباعة الجداول</button>
+    <button onclick="downloadPDF()">تحميل PDF</button>
+    <button onclick="downloadWord()">تحميل Word</button>
   </div>
 
-  <!-- جداول التوليد -->
   <div class="section">
-    <h2>جداول المؤسسة</h2>
+    <h2>جداول التوليد</h2>
     <div id="generatedTables"></div>
   </div>
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 let teachers = [];
-let classes = {1:5, 2:4, 3:3, 4:2};
+let classes = {1:5,2:4,3:3,4:2};
 let subjects = ['رياضيات','عربية','فرنسية','إنجليزية','علوم','فيزياء'];
 
 document.getElementById('uploadPic').addEventListener('change', function(e){
@@ -131,43 +129,26 @@ function addTeacher(name='', subjectsArr=[], assignedClasses=[], hours=0) {
   tbody.appendChild(tr);
 }
 
-function removeTeacher(btn) {
-  btn.closest('tr').remove();
-}
+function removeTeacher(btn) { btn.closest('tr').remove(); }
 
 function fillSchool() {
-  // إعادة التعيين أولاً
   resetTables();
-
-  // تعبئة الأقسام
   classes = {
     1: parseInt(document.getElementById('level1').value),
     2: parseInt(document.getElementById('level2').value),
     3: parseInt(document.getElementById('level3').value),
     4: parseInt(document.getElementById('level4').value)
   };
-
-  // أسماء أساتذة افتراضية
   const teacherNames = [];
-  for(let i=1;i<=27;i++){
-    teacherNames.push('أستاذ ' + i);
-  }
-
-  // ملء جدول الأساتذة
-  let tIndex = 0;
-  for(let name of teacherNames){
-    // توزيع المواد والأقسام بشكل عشوائي مع المنطقية
+  for(let i=1;i<=27;i++) teacherNames.push('أستاذ ' + i);
+  teacherNames.forEach(name=>{
     let subjCount = Math.floor(Math.random()*3)+1;
     let subs = [];
-    for(let j=0;j<subjCount;j++){
-      subs.push(subjects[Math.floor(Math.random()*subjects.length)]);
-    }
-    let assigned = [];
-    let classLevels = Object.keys(classes);
-    assigned.push(classLevels[Math.floor(Math.random()*classLevels.length)]);
-    let hours = 4 + Math.floor(Math.random()*3); // 4-6 ساعات افتراضية
-    addTeacher(name,subs,assigned,hours);
-  }
+    for(let j=0;j<subjCount;j++) subs.push(subjects[Math.floor(Math.random()*subjects.length)]);
+    let assigned = [Math.ceil(Math.random()*4)];
+    let hours = 4 + Math.floor(Math.random()*3);
+    addTeacher(name, subs, assigned, hours);
+  });
 }
 
 function resetTables() {
@@ -175,10 +156,7 @@ function resetTables() {
   document.getElementById('generatedTables').innerHTML = '';
 }
 
-function generateTimetable() {
-  // هنا خوارزمية ذكية لتوزيع الحصص على الأقسام والأساتذة بدون فراغ للتلاميذ
-  const output = document.getElementById('generatedTables');
-  output.innerHTML = '';
+function collectTeachers() {
   const tbody = document.querySelector('#teachersTable tbody');
   const rows = tbody.querySelectorAll('tr');
   const teacherData = [];
@@ -191,25 +169,27 @@ function generateTimetable() {
       hours: parseInt(cells[3].value)
     });
   });
+  return teacherData;
+}
 
-  // توليد جدول لكل قسم
-  for(let level=1; level<=4; level++){
+function generateSchoolTimetable() {
+  const output = document.getElementById('generatedTables');
+  output.innerHTML = '';
+  const teacherData = collectTeachers();
+
+  for(let level=1;level<=4;level++){
     for(let c=1;c<=classes[level];c++){
       const table = document.createElement('table');
       const thead = document.createElement('thead');
       const tbody = document.createElement('tbody');
       thead.innerHTML = `<tr><th>الحصة</th><th>الإثنين</th><th>الثلاثاء</th><th>الأربعاء</th><th>الخميس</th><th>الجمعة</th></tr>`;
       table.appendChild(thead);
-
-      // 6 حصص افتراضية في اليوم
       for(let period=1; period<=6; period++){
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${period}</td>`;
         for(let day=1; day<=5; day++){
-          // اختيار أستاذ عشوائي من الذين يدرسون هذا المستوى
           let candidates = teacherData.filter(t=>t.classes.includes(level.toString()));
-          let tIdx = Math.floor(Math.random()*candidates.length);
-          let teacher = candidates[tIdx];
+          let teacher = candidates[Math.floor(Math.random()*candidates.length)];
           let subject = teacher.subjects[Math.floor(Math.random()*teacher.subjects.length)];
           tr.innerHTML += `<td style="background-color:#${Math.floor(Math.random()*16777215).toString(16)}">${subject} - ${teacher.name}</td>`;
         }
@@ -220,6 +200,59 @@ function generateTimetable() {
       output.appendChild(table);
     }
   }
+}
+
+function generateTeachersTimetable() {
+  const output = document.getElementById('generatedTables');
+  output.innerHTML = '';
+  const teacherData = collectTeachers();
+  teacherData.forEach(teacher=>{
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+    thead.innerHTML = `<tr><th>الحصة</th><th>الإثنين</th><th>الثلاثاء</th><th>الأربعاء</th><th>الخميس</th><th>الجمعة</th></tr>`;
+    table.appendChild(thead);
+    for(let period=1;period<=6;period++){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${period}</td>`;
+      for(let day=1;day<=5;day++){
+        let subject = teacher.subjects[Math.floor(Math.random()*teacher.subjects.length)];
+        let cls = teacher.classes[Math.floor(Math.random()*teacher.classes.length)];
+        tr.innerHTML += `<td style="background-color:#${Math.floor(Math.random()*16777215).toString(16)}">${subject} - قسم ${cls}</td>`;
+      }
+      tbody.appendChild(tr);
+    }
+    table.appendChild(tbody);
+    output.appendChild(document.createElement('h3')).innerText = `${teacher.name}`;
+    output.appendChild(table);
+  });
+}
+
+function printTables() { window.print(); }
+
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.html(document.getElementById('generatedTables'), { callback: function (pdf) {
+      pdf.save('timetable.pdf');
+  } });
+}
+
+function downloadWord() {
+  let header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+               "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+               "xmlns='http://www.w3.org/TR/REC-html40'>"+
+               "<head><meta charset='utf-8'><title>جدول المؤسسة</title></head><body>";
+  let footer = "</body></html>";
+  let sourceHTML = header + document.getElementById("generatedTables").innerHTML + footer;
+  let blob = new Blob(['\ufeff', sourceHTML], {type:'application/msword'});
+  let url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+  let downloadLink = document.createElement("a");
+  downloadLink.href = url;
+  downloadLink.download = 'timetable.doc';
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
 }
 </script>
 

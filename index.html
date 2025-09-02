@@ -1,62 +1,58 @@
+
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ai_dali_nadjib_emploi_cem — نهائي ذكي</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Ai_dali_nadjib_emploi_cem — المولد الذكي النهائي</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root{
-      --bg:#061021; --card:#0d1724; --accent:#6d28d9; --muted:#93c5fd;
-      --text-dark:#071223;
-    }
-    body{background:linear-gradient(180deg,#04102a,#061021);color:#e6eef6;font-family:Inter,Segoe UI,Arial}
-    .card{background:var(--card);border-radius:10px;padding:12px;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+    body{background:linear-gradient(180deg,#031022,#061428);color:#e6eef6;font-family:Inter,system-ui,Arial}
+    .card{background:#0b1622;border-radius:10px;padding:14px;box-shadow:0 8px 30px rgba(0,0,0,.6)}
     table{border-collapse:collapse}
-    th,td{border:1px solid rgba(255,255,255,0.06);padding:6px;text-align:center}
-    .editable{outline:none}
-    .avatar{width:64px;height:64px;border-radius:9999px;object-fit:cover;border:3px solid rgba(255,255,255,.08)}
-    .tag{padding:6px 8px;border-radius:8px;font-weight:700}
-    .official{background:#c8e6c9;color:#081018}
-    .remedial{background:#fff59d;color:#081018}
-    .project{background:#a5d6a7;color:#081018}
-    .free{background:#d1c4e9;color:#081018}
-    .break{background:#ffe082;color:#081018}
+    th,td{border:1px solid rgba(255,255,255,0.06);padding:8px;text-align:center}
+    .avatar{width:60px;height:60px;border-radius:9999px;object-fit:cover;border:3px solid rgba(255,255,255,0.08)}
+    .tag{padding:5px 8px;border-radius:8px;font-weight:700}
+    .official{background:#b7e4c7;color:#04201b}
+    .remedial{background:#fff59d;color:#111}
+    .project{background:#a5d6a7;color:#04201b}
+    .free{background:#d6c6f0;color:#1b0f2b}
+    .break{background:#ffe0a3;color:#1b0f2b}
     .small{font-size:13px;color:#9fb7d9}
+    .muted{color:#94a3b8}
     .danger{color:#ffb4b4}
-    .success{color:#b8f3c2}
     .btn{padding:8px 12px;border-radius:8px;font-weight:700}
+    .editable{min-height:26px}
   </style>
 </head>
 <body>
   <div class="max-w-6xl mx-auto p-6 space-y-6">
-    <!-- Header -->
-    <div class="flex justify-between items-center">
+    <header class="flex justify-between items-center">
       <div>
-        <h1 class="text-2xl font-extrabold text-indigo-300">Ai_dali_nadjib_emploi_cem — المولد الذكي لاستعمال الزمن</h1>
-        <div class="small mt-1">اضغط على <strong>مؤسستي</strong> لملء بيانات نموذجية ثم <strong>توليد الجداول</strong>. كل توليد يعطي احتمالًا جديدًا.</div>
+        <h1 class="text-2xl font-bold text-indigo-300">Ai_dali_nadjib_emploi_cem — المولد الذكي لاستعمال الزمن</h1>
+        <div class="small mt-1 muted">اضغط «مؤسستي» ثم «توليد الجداول». كل توليد يعطي احتمالًا جديدًا، ولن يفشل — يعطي أفضل جدول ممكن ويعرض ملاحظات.</div>
       </div>
-      <div class="text-right flex items-center gap-4">
+      <div class="flex items-center gap-4">
         <div class="text-right">
-          <div>المؤسسة: <strong id="showInstitution">—</strong></div>
-          <div>أستاذ نموذجي: <strong id="showTeacher">—</strong></div>
+          <div class="muted">المؤسسة: <strong id="showInstitution">—</strong></div>
+          <div class="muted">أستاذ نموذجي: <strong id="showTeacher">—</strong></div>
         </div>
         <div>
-          <img id="avatar" class="avatar hidden" alt="profile">
-          <div class="mt-2">
+          <img id="avatar" class="avatar hidden" alt="avatar">
+          <div class="mt-2 text-center">
             <input id="imgFile" type="file" accept="image/*" class="hidden">
-            <button id="btnUpload" class="btn bg-slate-600" title="تحميل صورة الملف">تحميل صورة</button>
+            <button id="btnUpload" class="btn bg-slate-600">تحميل صورة</button>
           </div>
         </div>
       </div>
-    </div>
+    </header>
 
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-      <!-- Controls column -->
-      <div class="lg:col-span-1 space-y-4">
+      <!-- Controls -->
+      <aside class="lg:col-span-1 space-y-4">
         <div class="card">
           <h2 class="text-lg font-bold text-indigo-200">1. إعداد المؤسسة</h2>
-          <label class="block small mt-2">اسم المؤسسة</label>
+          <label class="block small mt-2 muted">اسم المؤسسة</label>
           <input id="institutionName" class="w-full p-2 rounded bg-slate-800 text-white" placeholder="متوسطة مشنتل محمد الطاهر - تيفاش">
 
           <div class="grid grid-cols-2 gap-2 mt-3">
@@ -70,10 +66,10 @@
 
         <div class="card">
           <h2 class="text-lg font-bold text-indigo-200">2. الأساتذة</h2>
-          <div class="small">قائمة قابلة للتحميل (مؤسستي) ثم تعديل. حد أقصى للنصاب: <strong>20</strong> ساعة.</div>
-          <div class="mt-2 overflow-auto" style="max-height:240px">
+          <div class="small muted">قائمة قابلة للتحميل (مؤسستي) ثم تعديل. نصاب أقصى: <strong>20</strong> ساعة.</div>
+          <div class="mt-2 overflow-auto" style="max-height:260px">
             <table id="teachersTable" class="w-full text-sm">
-              <thead><tr class="text-slate-300"><th>الأستاذ</th><th>المادة</th><th>الأقسام</th><th>ساعات</th><th></th></tr></thead>
+              <thead><tr class="muted"><th>الأستاذ</th><th>المادة</th><th>الأقسام</th><th>ساعات</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -86,7 +82,7 @@
         </div>
 
         <div class="card">
-          <h2 class="text-lg font-bold text-indigo-200">3. خيارات العرض</h2>
+          <h2 class="text-lg font-bold text-indigo-200">3. عرض</h2>
           <div class="mt-2">
             <button id="viewInstitution" class="btn bg-blue-600 w-full mb-2">📊 جدول المؤسسة</button>
             <div class="flex gap-2">
@@ -102,35 +98,34 @@
 
         <div class="card">
           <h2 class="text-lg font-bold text-indigo-200">4. تصدير / نسخ</h2>
-          <div class="flex gap-2 flex-wrap mt-2">
+          <div class="flex gap-2 mt-2 flex-wrap">
             <button id="btnCopy" class="btn bg-sky-600">📋 نسخ HTML</button>
             <button id="btnCSV" class="btn bg-sky-700">📊 Excel (CSV)</button>
             <button id="btnWord" class="btn bg-sky-500">📃 Word</button>
             <button id="btnPDF" class="btn bg-sky-400">📄 PDF</button>
           </div>
-          <div class="mt-3 small text-amber-200" id="diagnostic">الحالة: لم يتم التوليد بعد.</div>
+          <div class="mt-3 small" id="diagnostic">الحالة: جاهز.</div>
         </div>
-      </div>
+      </aside>
 
-      <!-- Output area (wide) -->
-      <div class="lg:col-span-3 space-y-4">
-        <div class="card" id="outputArea" style="min-height:280px">
-          <p class="small text-slate-300">بعد الضغط على «توليد الجداول» ستظهر الجداول هنا. يمكنك تعديل أي خلية (انقر واكتب).</p>
+      <!-- Output -->
+      <main class="lg:col-span-3">
+        <div id="outputArea" class="card min-h-[320px]">
+          <p class="small muted">بعد الضغط على «توليد الجداول» سيظهر جدول المؤسسة هنا. التوليد لا يفشل — سيعطي أفضل جدول ممكن ويعرض ملاحظات مفصلة بالأسفل.</p>
         </div>
-      </div>
+      </main>
     </div>
 
-    <footer class="text-sm text-slate-400">يجب أن يوفر التوليد حلًا منطقياً وفق المدخلات. إن لم يعثر الحل الكامل سيُعرض أفضل حل جزئي مع ملاحظات.</footer>
+    <footer class="text-sm text-slate-400">التطبيق يعطي جدولًا حتى لو كانت المدخلات محدودة: سيعرض الخانات الفارغة والملاحظات اللازمة لاستدراج أساتذة/زيادة ساعات.</footer>
   </div>
 
 <script>
-/* =========== ثوابت وقواعد =========== */
+/* ---------- ثوابت وقواعد ---------- */
 const DAYS = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس'];
 const SLOTS = ['08:00-09:00','09:00-10:00','10:00-11:00','11:00-12:00','13:00-14:00','14:00-15:00','15:00-16:00'];
-const BREAK = '12:00-13:00';
 const MAX_TEACHER = 20;
 
-// نصاب المواد بحسب المستوى (قياسي تقريبي) subjectHours[subject][level]
+// نصاب المواد حسب المستوى (تقريبي حسب طلبك)
 const subjectHours = {
   'رياضيات': {'1':4,'2':4,'3':5,'4':5},
   'عربية': {'1':4,'2':4,'3':4,'4':4},
@@ -146,27 +141,26 @@ const subjectHours = {
   'رسم': {'1':1,'2':1,'3':1,'4':1}
 };
 
-// أيام بيداغوجية افتراضية
+// أيام بيداغوجية افتراضية (قابلة للتعديل لاحقًا)
 let pedagogicalDays = {
   'رياضيات':'الخميس','عربية':'الاثنين','فرنسية':'الثلاثاء','انجليزية':'الاثنين','علوم طبيعية':'الأربعاء','فيزياء':'الثلاثاء','رسم':'الخميس','إعلام آلي':'الأربعاء'
 };
 
-/* =========== حالة التطبيق =========== */
-let teachers = []; // كل عنصر: {name, subject, sections:[], hours, totalAssigned}
-let institution = { name:'', levels: {1:5,2:4,3:3,4:2} };
-let lastSchedule = null; // النتيجة الحالية (schedule object)
-let currentView = 'institution'; // أو 'teacher' أو 'class'
-let lastSections = []; // قائمة الأقسام الحالية
+/* ---------- حالة التطبيق ---------- */
+let teachers = []; // {name,subject,sections:[],hours,totalAssigned}
+let institution = {name:'',levels:{1:5,2:4,3:3,4:2}};
+let lastSchedule = null;
+let lastSections = [];
 
-/* =========== مساعدات DOM =========== */
+/* ---------- DOM helpers ---------- */
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } return a; }
-function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
 
-/* =========== عناصر واجهة =========== */
+/* ---------- UI wiring ---------- */
 $('#btnUpload').addEventListener('click', ()=> $('#imgFile').click());
-$('#imgFile').addEventListener('change', function(e){ const f=e.target.files[0]; if(!f) return; const url=URL.createObjectURL(f); $('#avatar').src=url; $('#avatar').classList.remove('hidden'); });
+$('#imgFile').addEventListener('change',(e)=>{ const f=e.target.files[0]; if(!f) return; const url=URL.createObjectURL(f); $('#avatar').src=url; $('#avatar').classList.remove('hidden'); });
 
 $('#lvl1').addEventListener('change', updateTotal);
 $('#lvl2').addEventListener('change', updateTotal);
@@ -174,9 +168,9 @@ $('#lvl3').addEventListener('change', updateTotal);
 $('#lvl4').addEventListener('change', updateTotal);
 
 $('#btnMyInst').addEventListener('click', loadMyInstitution);
-$('#btnReset').addEventListener('click', ()=> { if(confirm('هل تريد إعادة التعيين وتفريغ كل المدخلات والجداول؟')) resetAll(); });
-$('#btnGenerate').addEventListener('click', ()=> { generateAll(); });
-$('#btnRegen').addEventListener('click', ()=> { generateAll(true); }); // true => force new trial
+$('#btnReset').addEventListener('click', ()=> { if(confirm('إعادة التعيين وتفريغ كل المدخلات والجداول؟')) resetAll(); });
+$('#btnGenerate').addEventListener('click', ()=> generateAll());
+$('#btnRegen').addEventListener('click', ()=> generateAll(true));
 $('#viewInstitution').addEventListener('click', ()=> showInstitutionTable());
 $('#viewTeacherBtn').addEventListener('click', ()=> showTeacherTable($('#teacherSelector').value));
 $('#viewClassBtn').addEventListener('click', ()=> showClassTable($('#classSelector').value));
@@ -186,30 +180,41 @@ $('#btnCSV').addEventListener('click', exportCSV);
 $('#btnWord').addEventListener('click', exportWord);
 $('#btnPDF').addEventListener('click', exportPDF);
 
-/* =========== أدوات واجهة أساسية =========== */
+/* ---------- utilities ---------- */
 function updateTotal(){
-  const total = (parseInt($('#lvl1').value||0) + parseInt($('#lvl2').value||0) + parseInt($('#lvl3').value||0) + parseInt($('#lvl4').value||0));
-  $('#totalClasses').innerText = total;
+  const tot = (parseInt($('#lvl1').value||0) + parseInt($('#lvl2').value||0) + parseInt($('#lvl3').value||0) + parseInt($('#lvl4').value||0));
+  $('#totalClasses').innerText = tot;
 }
 
-/* =========== إدارة الأساتذة UI =========== */
+function buildSections(){
+  const arr=[];
+  const l1 = parseInt($('#lvl1').value||0), l2 = parseInt($('#lvl2').value||0), l3 = parseInt($('#lvl3').value||0), l4 = parseInt($('#lvl4').value||0);
+  for(let i=1;i<=l1;i++) arr.push(`1م${i}`);
+  for(let i=1;i<=l2;i++) arr.push(`2م${i}`);
+  for(let i=1;i<=l3;i++) arr.push(`3م${i}`);
+  for(let i=1;i<=l4;i++) arr.push(`4م${i}`);
+  lastSections = arr;
+  renderTeachersUI();
+  return arr;
+}
+
+/* ---------- teachers UI ---------- */
 function renderTeachersUI(){
   const tbody = $('#teachersTable tbody'); tbody.innerHTML = '';
   teachers.forEach((t,i)=>{
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td class="p-2">${t.name}</td><td class="p-2">${t.subject}</td><td class="p-2">${(t.sections.length? t.sections.join(',') : '—')}</td><td class="p-2">${t.hours}</td><td class="p-2"><button onclick="deleteTeacher(${i})" class="px-2 py-1 bg-red-600 rounded text-xs">حذف</button></td>`;
+    tr.innerHTML = `<td class="p-2">${t.name}</td><td class="p-2">${t.subject}</td><td class="p-2">${t.sections.length? t.sections.join(',') : '—'}</td><td class="p-2">${t.hours}</td><td class="p-2"><button onclick="deleteTeacher(${i})" class="px-2 py-1 bg-red-600 rounded text-xs">حذف</button></td>`;
     tbody.appendChild(tr);
   });
-  // تحديث selectors
+  // selectors
   const teacherSel = $('#teacherSelector'); teacherSel.innerHTML = '<option value="">اختر أستاذ</option>';
-  teachers.forEach(t => { const o=document.createElement('option'); o.value=t.name; o.textContent = `${t.name} — ${t.subject}`; teacherSel.appendChild(o); });
+  teachers.forEach(t=> { const o=document.createElement('option'); o.value=t.name; o.textContent=`${t.name} — ${t.subject}`; teacherSel.appendChild(o); });
   const classSel = $('#classSelector'); classSel.innerHTML = '<option value="">اختر قسم</option>';
-  lastSections.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; classSel.appendChild(o); });
+  lastSections.forEach(s=> { const o=document.createElement('option'); o.value=s; o.textContent=s; classSel.appendChild(o); });
 }
+window.deleteTeacher = function(i){ teachers.splice(i,1); renderTeachersUI(); };
 
-window.deleteTeacher = function(i){ teachers.splice(i,1); renderTeachersUI(); }
-
-/* =========== بيانات مؤسستي افتراضية =========== */
+/* ---------- load sample institution ---------- */
 function loadMyInstitution(){
   resetAll(false);
   institution.name = 'متوسطة مشنتل محمد الطاهر - تيفاش';
@@ -255,61 +260,37 @@ function loadMyInstitution(){
     {name:'معلم_اسلامي',subject:'تربية اسلامية',sections:[],hours:8,totalAssigned:0}
   ];
 
-  // بناء الأقسام حسب المدخل
   lastSections = buildSections();
   $('#showInstitution').innerText = institution.name;
   $('#showTeacher').innerText = 'دالي نجيب — رياضيات';
   renderTeachersUI();
-  $('#diagnostic').innerText = 'تم تحميل بيانات مؤسستي النموذجية. اضغط توليد.';
+  $('#diagnostic').innerText = 'تم تحميل بيانات المؤسسة النموذجية. اضغط توليد.';
 }
 
-/* =========== تفريغ =========== */
+/* ---------- reset ---------- */
 function resetAll(clearUI=true){
   teachers = [];
-  institution = { name:'', levels:{1:0,2:0,3:0,4:0} };
+  institution = {name:'',levels:{1:0,2:0,3:0,4:0}};
   $('#institutionName').value='';
   $('#lvl1').value=0; $('#lvl2').value=0; $('#lvl3').value=0; $('#lvl4').value=0;
   updateTotal();
-  $('#showInstitution').innerText = '—';
-  $('#showTeacher').innerText = '—';
-  $('#outputArea').innerHTML = '<p class="small text-slate-300">النتائج ستظهر هنا بعد التوليد.</p>';
-  $('#diagnostic').innerText = 'تفريغ كامل.';
+  $('#showInstitution').innerText='—';
+  $('#showTeacher').innerText='—';
+  $('#outputArea').innerHTML = `<p class="small muted">النتائج ستظهر هنا بعد التوليد.</p>`;
+  $('#diagnostic').innerText = 'تم التفريغ.';
   lastSchedule = null; lastSections = [];
   if(clearUI) renderTeachersUI();
 }
 
-/* =========== بناء الأقسام ===========
-   صيغة: "1م1", "1م2", ... حسب المدخل */
-function buildSections(){
-  const arr=[];
-  const l1 = parseInt($('#lvl1').value||0);
-  const l2 = parseInt($('#lvl2').value||0);
-  const l3 = parseInt($('#lvl3').value||0);
-  const l4 = parseInt($('#lvl4').value||0);
-  for(let i=1;i<=l1;i++) arr.push(`1م${i}`);
-  for(let i=1;i<=l2;i++) arr.push(`2م${i}`);
-  for(let i=1;i<=l3;i++) arr.push(`3م${i}`);
-  for(let i=1;i<=l4;i++) arr.push(`4م${i}`);
-  lastSections = arr;
-  renderTeachersUI();
-  return arr;
-}
-
-/* =========== الخوارزمية الذكية (توليد) ===========
-   - تحاول عدة محاولات عشوائية
-   - تقييم الحلول بواسطة دالة score
-   - تسمح بمرونة: تقبل حل جزئي إذا لم يتوفر الكامل
-*/
+/* ---------- التوليد الذكي (لا يفشل) ---------- */
 function generateAll(forceNew=false){
-  // قراءة المدخلات
   institution.name = $('#institutionName').value || institution.name || 'متوسطة مشنتل محمد الطاهر - تيفاش';
   $('#showInstitution').innerText = institution.name;
-  // تحديث الأقسام
   const sections = buildSections();
   if(sections.length===0){ alert('لم تُعرّف أقسام. اضغط "مؤسستي" أو أدخل عدد الأقسام.'); return; }
-  if(teachers.length===0){ if(confirm('قائمة الأساتذة فارغة. هل تريد تحميل بيانات مؤسستي؟')) loadMyInstitution(); else return; }
+  if(teachers.length===0){ if(confirm('قائمة الأساتذة فارغة. تحميل مؤسستي؟')) loadMyInstitution(); else return; }
 
-  // إعداد متطلبات كل قسم
+  // متطلبات كل قسم (عدد الحصص لكل مادة)
   const req = {};
   for(const sec of sections){
     const lvl = sec.charAt(0);
@@ -318,245 +299,168 @@ function generateAll(forceNew=false){
       const h = subjectHours[subj] && subjectHours[subj][lvl] ? subjectHours[subj][lvl] : 0;
       if(h>0) req[sec][subj] = h;
     }
-    // تكييفات خاصة
+    // تعديل خاص لسنة رابعة: لا إعلام آلي
     if(sec.startsWith('4') && req[sec]['إعلام آلي']) delete req[sec]['إعلام آلي'];
     if(sec.startsWith('4') && !req[sec]['رسم']) req[sec]['رسم'] = 1;
   }
 
-  // وظيفة تقييم الحل: أعلى النقاط أفضل
-  function scoreSolution(schedule){
-    // أهداف: أقل فراغات، رياضيات صباحًا (وخاصة 4م)، أقل فراغات أساتذة
-    let score = 0;
-    let emptyCount = 0;
-    let mathMorningCount = 0;
-    let mathTotal = 0;
-    let teacherGaps = 0;
-    const teacherAssigned = {};
-    for(const sec of sections){
-      for(const d of DAYS){
-        for(const s of SLOTS){
-          const c = schedule[sec][d][s];
-          if(!c){ // فراغ
-            if(!(d==='الثلاثاء' && SLOTS.indexOf(s)>=4)) emptyCount++;
-          } else {
-            // رياضيات صباحي
-            if(c.subj === 'رياضيات'){
-              mathTotal++;
-              const hour = parseInt(s.split(':')[0]);
-              if(hour < 12) mathMorningCount++;
-              if(sec.startsWith('4') && hour < 12) score += 2; // أولوية لبضاعة 4م في الصباح
-            }
-            // عد حصص الأستاذ
-            teacherAssigned[c.teacher] = (teacherAssigned[c.teacher]||0) + 1;
-          }
-        }
-      }
-    }
-    // حساب فروقات أساتذة (فراغات/توزيع): نعاقب توزيع سيء (فراغات كثيرة)
-    for(const t of teachers){
-      const assigned = teacherAssigned[t.name]||0;
-      const gapPenalty = Math.max(0, (t.hours - assigned)); // إذا لم يتوفر لهم حصص كافية (قد لا يكون خطأ لو ليس هناك حاجة)
-      teacherGaps += gapPenalty;
-      if(assigned > MAX_TEACHER) score -= 1000 * (assigned - MAX_TEACHER);
-    }
-    // تركيب النقاط
-    score += -emptyCount * 1;
-    score += mathMorningCount * 2;
-    score += -teacherGaps * 0.5;
-    // مكافأة إذا استوفت كل المتطلبات
-    let allMet = true;
-    for(const sec of sections){
-      for(const subj in req[sec]){
-        const need = req[sec][subj];
-        let got = 0;
-        for(const d of DAYS) for(const s of SLOTS) if(schedule[sec][d][s] && schedule[sec][d][s].subj===subj) got++;
-        if(got < need) { allMet = false; score -= (need - got) * 5; }
-      }
-    }
-    if(allMet) score += 2000;
-    // تفضيل الحلول التي تضع الرياضيات في الصباح (نسبة)
-    if(mathTotal>0) score += (mathMorningCount / mathTotal) * 50;
-    return {score, emptyCount, allMet};
-  }
-
-  // إنشاء قالب جدول
+  // إنشاء قالب جدول فارغ
   function makeSchedule(){
     const S = {};
-    for(const sec of sections){
-      S[sec] = {};
-      for(const d of DAYS){ S[sec][d] = {}; for(const s of SLOTS) S[sec][d][s] = null; }
-    }
+    for(const sec of sections){ S[sec] = {}; for(const d of DAYS){ S[sec][d] = {}; for(const s of SLOTS) S[sec][d][s] = null; } }
     return S;
   }
-  // حالة انشغال الأساتذة
-  function makeBusy(){
-    const busy = {};
-    teachers.forEach(t=>{ busy[t.name] = {}; for(const d of DAYS){ busy[t.name][d] = {}; for(const s of SLOTS) busy[t.name][d][s]=false; } });
-    return busy;
-  }
+  const schedule = makeSchedule();
 
-  // index teachers by subject
-  const teachersBySubject = {};
-  for(const t of teachers) { if(!teachersBySubject[t.subject]) teachersBySubject[t.subject]=[]; teachersBySubject[t.subject].push({...t}); }
+  // busy map للمعلمين
+  const busy = {};
+  teachers.forEach(t=>{ busy[t.name] = {}; for(const d of DAYS) { busy[t.name][d] = {}; for(const s of SLOTS) busy[t.name][d][s] = false; } t.totalAssigned=0; });
 
-  // candidate teachers function
-  function candidatesFor(subj, section, tstate){
-    let list = tstate.filter(x=> x.subject === subj);
-    // sort: أولًا من يملك القسم (لو مسند) ثم الأقل مشغولية
-    list.sort((a,b)=>{
-      const aHas = a.sections && a.sections.includes(section);
-      const bHas = b.sections && b.sections.includes(section);
-      if(aHas && !bHas) return -1;
-      if(!aHas && bHas) return 1;
-      return (a.totalAssigned||0) - (b.totalAssigned||0);
-    });
-    return list;
-  }
-
-  // عملية التجارب العشوائية + backtracking
-  const MAX_TRIALS = 200;
-  let bestSolution = null;
-  let bestScore = -Infinity;
-  let bestDiagnostics = '';
-
-  trialLoop:
-  for(let trial=0; trial<MAX_TRIALS; trial++){
-    // تحضير
-    const schedule = makeSchedule();
-    const busy = makeBusy();
-    const tstate = teachers.map(t => ({...t, totalAssigned:0}));
-    // نوزع الأقسام بترتيب عشوائي لتغيير الحلول
-    const classOrder = shuffle(sections.slice());
-
-    let failed = false;
-
-    // لكل قسم نحاول تعبئة المواد حسب الحاجيات
-    for(const sec of classOrder){
-      const lvl = sec.charAt(0);
-      // المواد المرغوب فيها وتصنيفها حسب العدد (الأكثر حاجة أولاً)
-      const subjList = Object.keys(req[sec]).sort((a,b)=> (req[sec][b] - req[sec][a]));
-
-      // recursive place for subject index
-      function placeSubjects(index){
-        if(index >= subjList.length) return true;
-        const subj = subjList[index];
-        const need = req[sec][subj];
-        // build candidate slots list with preference: رياضيات صباحًا
-        const slotCandidates = [];
-        for(const d of DAYS){
-          if(pedagogicalDays[subj] && pedagogicalDays[subj] === d) continue;
-          // order of slots: if subj math => morning preferred
-          const orderSlots = (subj === 'رياضيات') ? ['08:00-09:00','09:00-10:00','10:00-11:00','11:00-12:00','13:00-14:00','14:00-15:00','15:00-16:00'] : SLOTS.slice();
-          for(const s of orderSlots){
-            if(d==='الثلاثاء' && SLOTS.indexOf(s) >= 4) continue; // الثلاثاء نصف يوم (بعد 12:00 قد يكون لا دوام)
-            if(s === BREAK) continue;
-            slotCandidates.push({d,s});
-          }
-        }
-        shuffle(slotCandidates);
-
-        // need to choose 'need' slots
-        const chosen = [];
-        function placeK(k){
-          if(k >= need) return true;
-          for(const ds of slotCandidates){
-            const {d,s} = ds;
-            // if class already has something at day/slot skip
-            if(schedule[sec][d][s]) continue;
-            // don't put more than 2 نفس المادة في نفس اليوم في نفس القسم
-            const sameDayCount = SLOTS.reduce((acc,sl)=> acc + (schedule[sec][d][sl] && schedule[sec][d][sl].subj===subj ? 1:0), 0);
-            if(sameDayCount >= 2) continue;
-            // candidate teachers
-            const candList = candidatesFor(subj, sec, tstate);
-            shuffle(candList);
-            for(const cand of candList){
-              if(!cand) continue;
-              if(cand.totalAssigned >= cand.hours) continue; // لا نعطيه أكثر من ساعات معينه طلبها
-              if(cand.totalAssigned >= MAX_TEACHER) continue; // لا نتجاوز 20
-              if(busy[cand.name][d][s]) continue;
-              // also avoid teacher teaching same class in another place same slot (handled by busy)
-              // assign
-              schedule[sec][d][s] = { subj, teacher: cand.name, type: 'official' };
-              cand.totalAssigned++;
-              busy[cand.name][d][s] = true;
-              chosen.push({d,s,candName:cand.name});
-              if(placeK(k+1)) return true;
-              // backtrack
-              const r = chosen.pop();
-              schedule[sec][r.d][r.s] = null;
-              const tt = tstate.find(x=> x.name===r.candName); if(tt) tt.totalAssigned--;
-              busy[r.candName][r.d][r.s] = false;
-            }
-          }
-          return false;
-        }
-
-        const ok = placeK(0);
-        if(!ok) return false;
-        return placeSubjects(index+1);
+  // ترتيب أولي للقيم: كل مادة لكل قسم كقائمة من وحدات الحصة
+  const tasks = []; // كل مهمة: {sec, subj}
+  for(const sec of sections){
+    for(const subj in req[sec]){
+      for(let k=0;k<req[sec][subj];k++){
+        tasks.push({sec,subj});
       }
-
-      const okSec = placeSubjects(0);
-      if(!okSec){ failed = true; break; }
-    } // end for each section
-
-    // if not failed, evaluate
-    if(!failed){
-      const res = scoreSolution(schedule);
-      if(res.score > bestScore){
-        bestScore = res.score;
-        bestSolution = deepClone(schedule);
-        bestDiagnostics = `تجربة ${trial+1}: نقاط ${res.score.toFixed(2)} — فراغات ${res.emptyCount} — كامل:${res.allMet}`;
-      }
-      if(res.allMet){ // حل كامل وجيد -> نوقف المحاولات
-        bestDiagnostics = `نجح التوليد بالكامل في التجربة ${trial+1} — نقاط ${res.score.toFixed(2)}.`;
-        break trialLoop;
-      }
-    } else {
-      // failed trial: نستمر
     }
-  } // end trials
+  }
+  // نخلط المهام لتنوع الحلول، لكن نريد رياضيات مبكرًا => نضع الرياضيات في بداية القائمة مع أفضلية للقسم 4م
+  const mathTasks = tasks.filter(t=> t.subj==='رياضيات').sort((a,b)=> (a.sec.startsWith('4')? -1:0));
+  const other = tasks.filter(t=> t.subj!=='رياضيات');
+  const mixed = mathTasks.concat(shuffle(other));
 
-  if(!bestSolution){
-    $('#diagnostic').innerText = 'فشل التوليد: لا توجد حلول ممكنة. حاول تعديل المدخلات (زيادة الأساتذة/الساعات).';
-    $('#outputArea').innerHTML = `<p class="small text-amber-200">فشل التوليد: لا توجد حلول ممكنة.</p>`;
-    return;
+  // function to get candidate teachers for subject
+  function candidates(subj, section){
+    // teachers who teach this subj and not exceeded requested hours
+    let cand = teachers.filter(t => t.subject === subj);
+    // if none, allow teachers of other subjects? NO — we prefer not to. If none, return empty.
+    // sort: those with fewer assigned hours first
+    cand.sort((a,b)=> (a.totalAssigned||0) - (b.totalAssigned||0));
+    return cand;
   }
 
-  // إذا وجدنا حل أفضل (قد يكون جزئي) نعرضه
-  lastSchedule = bestSolution;
-  // حساب حالة (كامل/جزئي)
-  const finalScore = scoreSolution(bestSolution);
-  const statusText = finalScore.allMet ? '✅ تم توليد جدول كامل متوافق' : '⚠️ تم توليد جدول جزئي — لم تُلبَّ كل المتطلبات، عرض أفضل حل ممكن';
-  $('#diagnostic').innerText = `${statusText} — ${bestDiagnostics || ''}`;
-  // بعد التوليد نعرض جدول المؤسسة تلقائياً
+  // Preferred slot order per subject: math -> morning preference
+  function preferredSlotsFor(subj){
+    if(subj === 'رياضيات'){
+      return ['08:00-09:00','09:00-10:00','10:00-11:00','11:00-12:00','13:00-14:00','14:00-15:00','15:00-16:00'];
+    }
+    return SLOTS.slice();
+  }
+
+  // Helper: section free at day/slot?
+  function isSectionFree(sec,d,s){ return !schedule[sec][d][s]; }
+
+  // Worker: attempt place one task, returns true if placed else false (and record reason)
+  const notes = []; // نصائح وملاحظات
+  function placeTask(task){
+    const {sec,subj} = task;
+    const slotsOrder = preferredSlotsFor(subj);
+    // build list of candidate day-slot pairs, avoiding pedagogical day for subj
+    const dsPairs = [];
+    for(const d of DAYS){
+      if(pedagogicalDays[subj] && pedagogicalDays[subj] === d) continue;
+      for(const s of slotsOrder){
+        if(d==='الثلاثاء' && SLOTS.indexOf(s)>=4) continue; // الثلاثاء نصف يوم - السماح بعروض قليلة بعد 12؟ حسب طلب: الثلاثاء نصف يوم -> نمنع بعد الظهر
+        dsPairs.push({d,s});
+      }
+    }
+    // shuffle to vary across regenerations, but keep order priority
+    shuffle(dsPairs);
+    // attempt: prefer morning for math and prefer teachers with available hours
+    const cands = candidates(subj, sec);
+    for(const {d,s} of dsPairs){
+      if(!isSectionFree(sec,d,s)) continue;
+      // try teachers in order
+      for(const t of cands){
+        if(t.totalAssigned >= t.hours) continue; // teacher reached requested hours
+        if(t.totalAssigned >= MAX_TEACHER) continue; // safety
+        if(busy[t.name][d][s]) continue;
+        // ensure teacher not teaching same section at same slot (busy covers)
+        // assign
+        schedule[sec][d][s] = {subj, teacher: t.name, type: 'official'};
+        t.totalAssigned = (t.totalAssigned||0) + 1;
+        busy[t.name][d][s] = true;
+        return true;
+      }
+    }
+    // if cannot place because no teacher available in preferred slots, try more flexible slots including pedagogical day or Tuesday afternoons
+    const dsPairsFlex = [];
+    for(const d of DAYS){
+      for(const s of SLOTS){
+        // allow pedagogical day slots as last resort
+        dsPairsFlex.push({d,s});
+      }
+    }
+    shuffle(dsPairsFlex);
+    for(const {d,s} of dsPairsFlex){
+      if(!isSectionFree(sec,d,s)) continue;
+      const cands2 = candidates(subj, sec);
+      for(const t of cands2){
+        if(t.totalAssigned >= t.hours) continue;
+        if(t.totalAssigned >= MAX_TEACHER) continue;
+        if(busy[t.name][d][s]) continue;
+        schedule[sec][d][s] = {subj, teacher: t.name, type: 'official (flex)'};
+        t.totalAssigned = (t.totalAssigned||0) + 1;
+        busy[t.name][d][s] = true;
+        return true;
+      }
+    }
+    // أخيراً: لا يوجد معلم، نترك الفراغ ونسجل ملاحظة
+    notes.push(`القسم ${sec} — المادة ${subj}: لا يوجد أستاذ متاح أو نصاب كافٍ، تركت الحصة فارغة.`);
+    return false;
+  }
+
+  // أول مرحلة: نحاول وضع كل المهام
+  for(const t of mixed){
+    placeTask(t);
+  }
+
+  // بعد التعيين: نملأ الفجوات الممكنة بحصص استدراك أو بدل فراغات إن أمكن (نحاول تقليل الفراغات للأساتذة)
+  // محاولة بسيطة: لكل معلم، إذا لديه فراغات كثيرة نعمل لا شيء معقد — نترك الخوارزمية الأساسية، لأنها كافية الآن.
+
+  lastSchedule = schedule;
+
+  // بناء تقرير ملاحظات نهائي: نذكر المواد غير المكتملة (عدد الحصص من المطلوب/الموجود)
+  const report = [];
+  for(const sec of sections){
+    for(const subj in req[sec]){
+      const need = req[sec][subj];
+      let got = 0;
+      for(const d of DAYS) for(const s of SLOTS) if(schedule[sec][d][s] && schedule[sec][d][s].subj === subj) got++;
+      if(got < need) report.push(`القسم ${sec} — ${subj}: مطلوب ${need} حصص، مُعين ${got} ⇒ يلزم استدعاء/زيادة أساتذة أو تعديل نصاب.`);
+    }
+  }
+  // تحذير: أساتذة تجاوزوا نصابهم؟
+  const overloads = teachers.filter(t=> (t.totalAssigned||0) > t.hours).map(t=> `${t.name} (مُعين: ${t.totalAssigned}، نصاب: ${t.hours})`);
+  if(overloads.length) report.push('تحذير: بعض الأساتذة تجاوزوا نصابهم: ' + overloads.join('; '));
+
+  // مخرجات: نعرض الجدول والمؤسسة والتلميذ والأساتذة حسب طلبك
+  $('#diagnostic').innerText = report.length ? ('ملاحظات: \n' + report.join('\n')) : 'تم التوليد — لا ملاحظات مهمة.';
   showInstitutionTable();
 }
 
-/* =========== عرض الجداول =========== */
+/* ---------- عرض النتائج ---------- */
 function showInstitutionTable(){
-  currentView = 'institution';
-  if(!lastSchedule){ $('#outputArea').innerHTML = `<p class="small text-slate-300">لا توجد نتائج بعد. اضغط توليد.</p>`; return; }
+  if(!lastSchedule){ $('#outputArea').innerHTML = `<p class="small muted">لا توجد نتائج بعد. اضغط توليد.</p>`; return; }
   const sections = lastSections.slice();
   const out = $('#outputArea'); out.innerHTML = '';
-  // عنوان
-  const h = document.createElement('div'); h.innerHTML = `<h2 class="text-xl text-indigo-300 font-semibold">${$('#institutionName').value || 'المؤسسة'}</h2><div class="small mt-1">عرض جدول المؤسسة الشامل — الأقسام: ${sections.join(', ')}</div>`; out.appendChild(h);
+  const header = document.createElement('div'); header.innerHTML = `<h2 class="text-xl text-indigo-300">${$('#institutionName').value || 'المؤسسة'}</h2><div class="small muted">عرض استعمال الزمن للمؤسسة — الأقسام: ${sections.join(', ')}</div>`; out.appendChild(header);
 
-  // لكل يوم نعرض جدول
   for(const d of DAYS){
-    const title = document.createElement('h3'); title.className='text-lg text-indigo-200 mt-4'; title.textContent = d; out.appendChild(title);
+    const dayTitle = document.createElement('h3'); dayTitle.className='text-lg text-indigo-200 mt-4'; dayTitle.textContent = d; out.appendChild(dayTitle);
     const wrap = document.createElement('div'); wrap.className='overflow-auto';
     let html = `<table class="w-full bg-white text-black schedule-table"><thead><tr><th>الساعة</th>`;
-    sections.forEach(sec => html += `<th class="slot">${sec}</th>`);
+    sections.forEach(s=> html += `<th>${s}</th>`);
     html += `</tr></thead><tbody>`;
-    for(const s of SLOTS){
-      html += `<tr><td>${s}</td>`;
+    for(const slot of SLOTS){
+      html += `<tr><td>${slot}</td>`;
       for(const sec of sections){
-        const cell = lastSchedule[sec] && lastSchedule[sec][d] ? lastSchedule[sec][d][s] : null;
-        if(cell) html += `<td contenteditable="true" class="editable official">${cell.subj}<br/><small>${cell.teacher}</small></td>`;
+        const c = lastSchedule[sec][d][slot];
+        if(c) html += `<td contenteditable="true" class="editable official">${c.subj}<br/><small>${c.teacher}</small></td>`;
         else {
-          if(s==='13:00-14:00') html += `<td contenteditable="true" class="break">راحة</td>`;
-          else if(d==='الثلاثاء' && SLOTS.indexOf(s)>=4) html += `<td contenteditable="true" class="free">—</td>`;
+          if(slot === '13:00-14:00') html += `<td contenteditable="true" class="break">راحة</td>`;
+          else if(d==='الثلاثاء' && SLOTS.indexOf(slot) >= 4) html += `<td contenteditable="true" class="free">—</td>`;
           else html += `<td contenteditable="true" class="free">فراغ</td>`;
         }
       }
@@ -565,159 +469,97 @@ function showInstitutionTable(){
     html += `</tbody></table>`;
     wrap.innerHTML = html; out.appendChild(wrap);
   }
-  // إضافة أزرار سريعة للتصدير
-  const footer = document.createElement('div'); footer.className='mt-3 small'; footer.innerHTML = `<div class="mt-2 small">يمكنك تعديل أي خلية ثم التصدير.</div>`; out.appendChild(footer);
 }
 
 function showTeacherTable(teacherName){
-  currentView = 'teacher';
-  if(!teacherName){ alert('اختر أستاذاً من القائمة'); return; }
-  if(!lastSchedule){ alert('لا توجد جداول. اضغط توليد'); return; }
+  if(!teacherName){ alert('اختر أستاذًا'); return; }
+  if(!lastSchedule){ alert('لا توجد نتائج. اضغط توليد'); return; }
   const sections = lastSections.slice();
   const out = $('#outputArea'); out.innerHTML = `<h2 class="text-xl text-indigo-300">جدول الأستاذ ${teacherName}</h2>`;
-  // نجهز جدول: صفوف الساعات، أعمدة الأيام
   let html = `<div class="overflow-auto"><table class="w-full bg-white text-black schedule-table"><thead><tr><th>الساعة</th>`;
   DAYS.forEach(d=> html += `<th>${d}</th>`); html += `</tr></thead><tbody>`;
-  for(const s of SLOTS){
-    html += `<tr><td>${s}</td>`;
+  for(const slot of SLOTS){
+    html += `<tr><td>${slot}</td>`;
     for(const d of DAYS){
-      // العثور على القسم الذي يدرّس الأستاذ فيه بهذا اليوم والساعة
       let found = null;
       for(const sec of sections){
-        const cell = lastSchedule[sec][d][s];
-        if(cell && cell.teacher === teacherName){ found = {sec, subj:cell.subj}; break; }
+        const c = lastSchedule[sec][d][slot];
+        if(c && c.teacher === teacherName){ found = {sec,c}; break; }
       }
-      if(found) html += `<td contenteditable="true" class="editable official">${found.sec}<br/><small>${found.subj}</small></td>`;
+      if(found) html += `<td contenteditable="true" class="editable official">${found.sec}<br/><small>${found.c.subj}</small></td>`;
       else {
-        if(s==='13:00-14:00') html += `<td contenteditable="true" class="break">راحة</td>`;
-        else if(d==='الثلاثاء' && SLOTS.indexOf(s)>=4) html += `<td contenteditable="true" class="free">—</td>`;
+        if(slot === '13:00-14:00') html += `<td contenteditable="true" class="break">راحة</td>`;
+        else if(d==='الثلاثاء' && SLOTS.indexOf(slot) >= 4) html += `<td contenteditable="true" class="free">—</td>`;
         else html += `<td contenteditable="true" class="free">فراغ</td>`;
       }
     }
     html += `</tr>`;
   }
   html += `</tbody></table></div>`;
-  out.insertAdjacentHTML('beforeend',html);
+  out.insertAdjacentHTML('beforeend', html);
 }
 
 function showClassTable(section){
-  currentView = 'class';
-  if(!section){ alert('اختر قسماً من القائمة'); return; }
-  if(!lastSchedule){ alert('لا توجد جداول. اضغط توليد'); return; }
+  if(!section){ alert('اختر قسمًا'); return; }
+  if(!lastSchedule){ alert('لا توجد نتائج. اضغط توليد'); return; }
   const out = $('#outputArea'); out.innerHTML = `<h2 class="text-xl text-indigo-300">جدول القسم ${section}</h2>`;
   let html = `<div class="overflow-auto"><table class="w-full bg-white text-black schedule-table"><thead><tr><th>الساعة</th>`;
   DAYS.forEach(d=> html += `<th>${d}</th>`); html += `</tr></thead><tbody>`;
-  for(const s of SLOTS){
-    html += `<tr><td>${s}</td>`;
+  for(const slot of SLOTS){
+    html += `<tr><td>${slot}</td>`;
     for(const d of DAYS){
-      const cell = lastSchedule[section][d][s];
-      if(cell) html += `<td contenteditable="true" class="editable official">${cell.subj}<br/><small>${cell.teacher}</small></td>`;
+      const c = lastSchedule[section][d][slot];
+      if(c) html += `<td contenteditable="true" class="editable official">${c.subj}<br/><small>${c.teacher}</small></td>`;
       else {
-        if(s==='13:00-14:00') html += `<td contenteditable="true" class="break">راحة</td>`;
-        else if(d==='الثلاثاء' && SLOTS.indexOf(s)>=4) html += `<td contenteditable="true" class="free">—</td>`;
+        if(slot === '13:00-14:00') html += `<td contenteditable="true" class="break">راحة</td>`;
+        else if(d==='الثلاثاء' && SLOTS.indexOf(slot) >= 4) html += `<td contenteditable="true" class="free">—</td>`;
         else html += `<td contenteditable="true" class="free">فراغ</td>`;
       }
     }
     html += `</tr>`;
   }
   html += `</tbody></table></div>`;
-  out.insertAdjacentHTML('beforeend',html);
+  out.insertAdjacentHTML('beforeend', html);
 }
 
-/* =========== تصدير / نسخ =========== */
-function copyHTML(){ const html = $('#outputArea').innerHTML; navigator.clipboard.writeText(html).then(()=> alert('نُسخ HTML')); }
-
+/* ---------- تصدير ونُسخ ---------- */
+function copyHTML(){ navigator.clipboard.writeText($('#outputArea').innerHTML).then(()=> alert('تم نسخ HTML'));}
 function exportCSV(){
-  const out = $('#outputArea');
-  if(!out.innerHTML.trim()){ alert('لا توجد جداول للتصدير'); return; }
-  // نجمع كل الجداول في صفحة ونحوّل إلى CSV بخط بسيط
-  const tables = out.querySelectorAll('table');
-  let csv = '';
-  tables.forEach((table, idx) => {
-    const caption = table.previousElementSibling ? table.previousElementSibling.innerText.replace(/\n/g,' ') : `Table ${idx+1}`;
-    csv += `"${caption}"\n`;
+  const out = $('#outputArea'); if(!out.innerHTML.trim()){ alert('لا توجد جداول'); return; }
+  const tables = out.querySelectorAll('table'); let csv='';
+  tables.forEach((table,idx)=>{
+    const title = table.previousElementSibling ? table.previousElementSibling.innerText.replace(/\n/g,' ') : `Table${idx+1}`;
+    csv += `"${title}"\n`;
     for(const row of table.rows){
-      const cells = Array.from(row.cells).map(c => '"' + c.innerText.replace(/"/g,'""').replace(/\n/g,' / ') + '"');
+      const cells = Array.from(row.cells).map(c=> '"' + c.innerText.replace(/"/g,'""').replace(/\n/g,' / ') + '"');
       csv += cells.join(',') + '\n';
     }
     csv += '\n';
   });
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='schedules.csv'; a.click();
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='schedules.csv'; a.click();
   URL.revokeObjectURL(a.href);
 }
-
 function exportWord(){
-  const out = $('#outputArea');
-  if(!out.innerHTML.trim()){ alert('لا توجد جداول للتصدير'); return; }
+  const out = $('#outputArea'); if(!out.innerHTML.trim()){ alert('لا توجد جداول'); return; }
   const html = '<html><head><meta charset="utf-8"></head><body dir="rtl">' + out.innerHTML + '</body></html>';
-  const blob = new Blob(['\ufeff', html], {type:'application/msword'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='schedules.doc'; a.click();
+  const blob = new Blob(['\ufeff', html], {type:'application/msword'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='schedules.doc'; a.click();
   URL.revokeObjectURL(a.href);
 }
-
 async function exportPDF(){
-  const out = $('#outputArea');
-  if(!out.innerHTML.trim()){ alert('لا توجد جداول للتصدير'); return; }
+  const out = $('#outputArea'); if(!out.innerHTML.trim()){ alert('لا توجد جداول'); return; }
   if(typeof html2canvas === 'undefined') await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
   if(typeof jspdf === 'undefined' && typeof window.jspdf === 'undefined') await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-  const canvas = await html2canvas(out, {scale:1.2, useCORS:true, backgroundColor:'#04102a'});
-  const imgData = canvas.toDataURL('image/png');
-  const { jsPDF } = window.jspdf || window.jspdf;
-  const pdf = new jsPDF('l','mm','a4');
-  const w = pdf.internal.pageSize.getWidth();
-  const h = (canvas.height * w) / canvas.width;
-  pdf.addImage(imgData,'PNG',0,0,w,h);
-  pdf.save('schedules.pdf');
+  const canvas = await html2canvas(out, {scale:1.2,useCORS:true,backgroundColor:'#031022'});
+  const img = canvas.toDataURL('image/png'); const { jsPDF } = window.jspdf || window.jspdf;
+  const pdf = new jsPDF('l','mm','a4'); const w = pdf.internal.pageSize.getWidth(); const h = (canvas.height * w) / canvas.width;
+  pdf.addImage(img,'PNG',0,0,w,h); pdf.save('schedules.pdf');
 }
+function loadScript(src){ return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
 
-function loadScript(src){ return new Promise((resolve,reject)=>{ const s=document.createElement('script'); s.src=src; s.onload=resolve; s.onerror=reject; document.head.appendChild(s); }); }
-
-/* =========== المساعدة: وظيفة scoreSolution (لنستخدمها أيضا خارج) =========== */
-function scoreSolution(schedule){
-  // نفس الدالة المبسطة المستخدمة داخل التوليد (لتقرير حالة الحل)
-  let score = 0; let emptyCount = 0; let mathMorning=0; let mathTotal=0;
-  const teacherAssigned = {};
-  for(const sec of lastSections){
-    for(const d of DAYS){
-      for(const s of SLOTS){
-        const c = schedule[sec][d][s];
-        if(!c){
-          if(!(d==='الثلاثاء' && SLOTS.indexOf(s)>=4)) emptyCount++;
-        } else {
-          if(c.subj==='رياضيات'){ mathTotal++; const hour=parseInt(s.split(':')[0]); if(hour<12) mathMorning++; if(sec.startsWith('4') && hour<12) score+=2; }
-          teacherAssigned[c.teacher] = (teacherAssigned[c.teacher]||0)+1;
-        }
-      }
-    }
-  }
-  let teacherGaps=0;
-  for(const t of teachers){ const assigned = teacherAssigned[t.name]||0; const gap=Math.max(0, (t.hours - assigned)); teacherGaps += gap; if(assigned>MAX_TEACHER) score -= 1000*(assigned-MAX_TEACHER); }
-  score += -emptyCount*1 + mathMorning*2 - teacherGaps*0.5;
-  let allMet=true;
-  for(const sec of lastSections){
-    for(const subj in subjectHours){
-      const lvl = sec.charAt(0);
-      const need = subjectHours[subj] && subjectHours[subj][lvl] ? subjectHours[subj][lvl] : 0;
-      if(lvl==='4' && subj==='إعلام آلي') continue;
-      if(need>0){
-        let got=0;
-        for(const d of DAYS) for(const s of SLOTS) if(schedule[sec][d][s] && schedule[sec][d][s].subj===subj) got++;
-        if(got < need){ allMet=false; score -= (need-got)*5; }
-      }
-    }
-  }
-  if(allMet) score+=2000;
-  if(mathTotal>0) score += (mathMorning/mathTotal)*50;
-  return {score, emptyCount, allMet};
-}
-
-/* =========== مبادئ التشغيل الأولية =========== */
+/* ---------- initialization ---------- */
 updateTotal();
 renderTeachersUI();
-
-/* ====== تعريض واجهة للمستخدم: عند الضغط على مؤسستي، سيحمل بيانات مؤسستك (نموذجية)؛ يمكن تعديلها يدويا ====== */
-
-/* إذا احتجت إضافة وظائف لإسناد أقسام لأساتذة أو رفع واجهات متقدمة أخبرني وسأضيفها. */
+// end of script
 </script>
 </body>
 </html>

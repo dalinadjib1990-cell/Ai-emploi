@@ -2,236 +2,197 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>AI Dali Emploi en CEM</title>
+<title>AI Dali Emploi CEM - ذكي</title>
 <style>
-  body {
-    background-color: #111;
-    color: #eee;
-    font-family: Arial, sans-serif;
-    direction: rtl;
-    margin: 0;
-    padding: 0;
-  }
-  header {
-    background-color: #222;
-    padding: 10px;
-    text-align: center;
-    font-size: 24px;
-  }
-  table {
-    border-collapse: collapse;
-    width: 90%;
-    margin: 20px auto;
-    background-color: #222;
-    color: #fff;
-  }
-  th, td {
-    border: 1px solid #555;
-    padding: 8px;
-    text-align: center;
-  }
-  th {
-    background-color: #333;
-  }
-  button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #444;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-  }
-  button:hover {
-    background-color: #666;
-  }
-  input {
-    width: 80px;
-    text-align: center;
-  }
+body {direction:rtl;font-family:Arial;background:#1e1e1e;color:#f5f5f5;margin:0;padding:0;}
+header{text-align:center;padding:15px;background:#121212;}
+header h1{color:#ffcc00;margin:0;}
+.container{padding:20px;}
+table{border-collapse:collapse;width:100%;margin-bottom:20px;background:#2c2c2c;}
+th,td{border:1px solid #444;padding:6px;text-align:center;}
+th{background:#3a3a3a;color:#ffcc00;}
+td{background:#2c2c2c;}
+button{padding:8px 18px;margin:4px;background:#ffcc00;border:none;color:#000;font-weight:bold;border-radius:5px;cursor:pointer;}
+button:hover{background:#e6b800;}
+input[type="text"],input[type="number"],select{padding:5px;margin:3px;border-radius:3px;border:1px solid #666;width:90%;background:#3a3a3a;color:#fff;}
+.profile-upload{text-align:center;margin-bottom:20px;}
+.profile-upload img{width:80px;height:80px;border-radius:50%;border:2px solid #ffcc00;}
 </style>
 </head>
 <body>
 
-<header>AI Dali Emploi en CEM</header>
+<header>
+  <h1>AI Dali Emploi CEM - ذكي</h1>
+</header>
 
-<div style="text-align:center;">
-  <button onclick="fillSchool()">مؤسستي</button>
-  <button onclick="generateAll()">توليد الجداول</button>
-  <button onclick="resetAll()">إعادة التعيين</button>
-  <button onclick="printPage()">طباعة</button>
+<div class="container">
+
+  <div class="profile-upload">
+    <label>تحميل صورة البروفايل:</label><br>
+    <input type="file" id="profileImage" accept="image/*"><br><br>
+    <img id="profilePreview" src="" alt="">
+  </div>
+
+  <h2>جدول الأساتذة</h2>
+  <button onclick="fillMySchool()">مؤسستي</button>
+  <button onclick="resetTables()">إعادة التعيين</button>
+  <button onclick="generateTimetables()">توليد الجداول</button>
+  <button onclick="downloadPDF()">تحميل PDF</button>
+  <button onclick="downloadWord()">تحميل Word</button>
+
+  <table id="teachersTable">
+    <thead>
+      <tr>
+        <th>اسم الأستاذ</th>
+        <th>المادة</th>
+        <th>الأقسام المسندة</th>
+        <th>عدد الساعات الكلي</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>جدول المؤسسة</h2>
+  <table id="schoolTable">
+    <thead>
+      <tr id="schoolHeader"></tr>
+    </thead>
+    <tbody id="schoolBody"></tbody>
+  </table>
+
+  <h2>جداول التلاميذ</h2>
+  <div id="studentsTables"></div>
+
 </div>
 
-<h2 style="text-align:center;">الأساتذة</h2>
-<table id="teachersTable">
-  <thead>
-    <tr>
-      <th>اسم الأستاذ</th>
-      <th>المواد</th>
-      <th>الأقسام</th>
-      <th>عدد الساعات</th>
-      <th>إجراء</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
-<button onclick="addTeacher()">إضافة أستاذ جديد</button>
-
-<h2 style="text-align:center;">الأقسام</h2>
-<table id="classesTable">
-  <thead>
-    <tr>
-      <th>المستوى</th>
-      <th>عدد الأقسام</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td>سنة أولى</td><td><input type="number" id="level1" value="5"></td></tr>
-    <tr><td>سنة ثانية</td><td><input type="number" id="level2" value="4"></td></tr>
-    <tr><td>سنة ثالثة</td><td><input type="number" id="level3" value="3"></td></tr>
-    <tr><td>سنة رابعة</td><td><input type="number" id="level4" value="2"></td></tr>
-  </tbody>
-</table>
-
-<h2 style="text-align:center;">جدول المؤسسة</h2>
-<table id="schoolSchedule">
-  <thead>
-    <tr>
-      <th>القسم</th>
-      <th>الإثنين</th>
-      <th>الثلاثاء</th>
-      <th>الأربعاء</th>
-      <th>الخميس</th>
-      <th>الجمعة</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
-
-<h2 style="text-align:center;">جداول الأساتذة</h2>
-<div id="teacherSchedules"></div>
-
 <script>
-// بيانات افتراضية
-let teachers = [];
-let classes = [];
-let subjects = [
-  {name:'رياضيات',hours:4,color:'#f39c12'},
-  {name:'عربية',hours:4,color:'#27ae60'},
-  {name:'فرنسية',hours:3,color:'#2980b9'},
-  {name:'علوم',hours:2,color:'#8e44ad'},
-  {name:'فيزياء',hours:2,color:'#c0392b'}
-];
+let teachers=[],classes=[{level:"سنة خامسة",count:5},{level:"سنة أولى",count:4},{level:"سنة ثانية",count:3},{level:"سنة ثالثة",count:2}],subjects=[
+{name:"العربية",hours:2,color:"#ff6666"},
+{name:"الرياضيات",hours:2,color:"#66ccff"},
+{name:"الفرنسية",hours:1,color:"#cc66ff"},
+{name:"الإنجليزية",hours:1,color:"#66ff66"},
+{name:"العلوم",hours:2,color:"#ffcc66"},
+{name:"الفيزياء",hours:2,color:"#66ffff"}];
 
-// إضافة أستاذ
-function addTeacher(name='أستاذ افتراضي', subjectsList=['رياضيات'], sections=['1م1'], hours=0) {
-  teachers.push({name:name, subjects:subjectsList, sections:sections, hours:hours});
-  renderTeachers();
-}
+// رفع صورة البروفايل
+document.getElementById('profileImage').addEventListener('change', function(e){
+  const reader = new FileReader();
+  reader.onload = function(){ document.getElementById('profilePreview').src = reader.result; }
+  reader.readAsDataURL(e.target.files[0]);
+});
 
-// عرض الأساتذة في الجدول
-function renderTeachers() {
-  const tbody = document.querySelector('#teachersTable tbody');
-  tbody.innerHTML = '';
-  teachers.forEach((t,index)=>{
-    let row = `<tr>
-      <td>${t.name}</td>
-      <td>${t.subjects.join(', ')}</td>
-      <td>${t.sections.join(', ')}</td>
-      <td>${t.hours}</td>
-      <td><button onclick="deleteTeacher(${index})">حذف</button></td>
-    </tr>`;
-    tbody.innerHTML += row;
-  });
-}
-
-// حذف أستاذ
-function deleteTeacher(idx) {
-  teachers.splice(idx,1);
-  renderTeachers();
-}
-
-// إعادة تعيين
-function resetAll() {
-  teachers = [];
-  renderTeachers();
-  document.querySelector('#schoolSchedule tbody').innerHTML = '';
-  document.getElementById('teacherSchedules').innerHTML = '';
-}
-
-// طباعة
-function printPage() { window.print(); }
-
-// ملء بيانات مؤسستي
-function fillSchool() {
-  resetAll();
-  // ملء الأقسام
-  classes = [];
-  let level1 = parseInt(document.getElementById('level1').value);
-  let level2 = parseInt(document.getElementById('level2').value);
-  let level3 = parseInt(document.getElementById('level3').value);
-  let level4 = parseInt(document.getElementById('level4').value);
-  for(let i=1;i<=level1;i++) classes.push({level:1,name:`1م${i}`});
-  for(let i=1;i<=level2;i++) classes.push({level:2,name:`2م${i}`});
-  for(let i=1;i<=level3;i++) classes.push({level:3,name:`3م${i}`});
-  for(let i=1;i<=level4;i++) classes.push({level:4,name:`4م${i}`});
-  
-  // ملء أساتذة افتراضيين
-  let teacherNames = [];
-  for(let i=1;i<=27;i++) teacherNames.push(`أستاذ ${i}`);
-  teacherNames.forEach(name=>{
-    let subs = subjects.slice(0,Math.floor(Math.random()*subjects.length)+1).map(s=>s.name);
-    let secs = classes.slice(0,Math.floor(Math.random()*classes.length/3)+1).map(c=>c.name);
-    addTeacher(name,subs,secs);
-  });
-}
-
-// توليد الجداول الذكية
-function generateAll() {
-  // حساب ساعات الأساتذة بدقة
-  teachers.forEach(t=>{
-    let total=0;
-    t.subjects.forEach(sub=>{
-      let subObj = subjects.find(s=>s.name===sub);
-      total += subObj.hours * t.sections.length;
-    });
-    t.hours = total;
-  });
-  
-  // جدول المؤسسة
-  const schoolTbody = document.querySelector('#schoolSchedule tbody');
-  schoolTbody.innerHTML = '';
-  classes.forEach(c=>{
-    let row = `<tr><td>${c.name}</td>`;
-    for(let d=0;d<5;d++){
-      let sub = subjects[Math.floor(Math.random()*subjects.length)].name;
-      row += `<td>${sub}</td>`;
-    }
-    row += '</tr>';
-    schoolTbody.innerHTML += row;
-  });
-  
-  // جداول الأساتذة
-  const div = document.getElementById('teacherSchedules');
-  div.innerHTML = '';
-  teachers.forEach(t=>{
-    let table = `<h3 style="text-align:center;">${t.name} (${t.hours} ساعة)</h3>`;
-    table += `<table><thead><tr><th>اليوم</th><th>الحصة 1</th><th>الحصة 2</th><th>الحصة 3</th><th>الحصة 4</th></tr></thead><tbody>`;
-    for(let d=0;d<5;d++){
-      table += `<tr><td>${['الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'][d]}</td>`;
-      for(let p=0;p<4;p++){
-        let s = t.subjects[Math.floor(Math.random()*t.subjects.length)];
-        let sec = t.sections[Math.floor(Math.random()*t.sections.length)];
-        table += `<td style="background-color:${subjects.find(sub=>sub.name===s).color}">${s} ${sec}</td>`;
+// زر مؤسستي: توليد أساتذة افتراضيين
+function fillMySchool(){
+  teachers=[];
+  let teacherNames=["دالي","أحمد","سعيد","ليلى","نور","جميلة","فؤاد","هالة","يوسف","سارة","رشيد","أمينة","محمد","فاطمة","هشام","سميرة","كريم","سهى","رضا","منى","رامي","رنا","أنيس","توفيق","لبنى","سليم","هند"];
+  let idx=0;
+  subjects.forEach(sub=>{
+    classes.forEach(cls=>{
+      for(let i=0;i<cls.count;i++){
+        if(idx>=teacherNames.length) idx=0;
+        let t = {name:teacherNames[idx],subject:sub.name,sections:[cls.level+" م"+(i+1)],totalHours:sub.hours*cls.count};
+        teachers.push(t);
+        idx++;
       }
-      table += '</tr>';
-    }
-    table += '</tbody></table>';
-    div.innerHTML += table;
+    });
+  });
+  renderTeachers();
+}
+
+// عرض الأساتذة
+function renderTeachers(){
+  const tbody=document.querySelector("#teachersTable tbody");
+  tbody.innerHTML="";
+  teachers.forEach(t=>{
+    let tr=document.createElement("tr");
+    tr.innerHTML=`<td>${t.name}</td><td>${t.subject}</td><td>${t.sections.join(", ")}</td><td>${t.totalHours}</td>`;
+    tbody.appendChild(tr);
   });
 }
-</script>
 
+// إعادة التعيين
+function resetTables(){teachers=[];document.querySelector("#teachersTable tbody").innerHTML="";document.getElementById("schoolHeader").innerHTML="";document.getElementById("schoolBody").innerHTML="";document.getElementById("studentsTables").innerHTML="";}
+
+// توليد الجداول
+function generateTimetables(){
+  if(teachers.length==0){alert("املأ بيانات الأساتذة أولاً!"); return;}
+  generateSchoolTable();
+  generateStudentTables();
+}
+
+// جدول المؤسسة مع توزيع منطقي
+function generateSchoolTable(){
+  const header=document.getElementById("schoolHeader");
+  header.innerHTML="<th>اليوم/الحصة</th>";
+  classes.forEach(cls=>{for(let i=1;i<=cls.count;i++){let th=document.createElement("th");th.textContent=cls.level+" م"+i;header.appendChild(th);}});
+
+  const body=document.getElementById("schoolBody");body.innerHTML="";
+  let days=["الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"];
+  days.forEach(d=>{
+    let tr=document.createElement("tr");
+    let tdDay=document.createElement("td");tdDay.textContent=d;tr.appendChild(tdDay);
+    classes.forEach(cls=>{
+      for(let i=0;i<cls.count;i++){
+        let td=document.createElement("td");
+        let cellSubjects=teachers.filter(t=>t.sections.includes(cls.level+" م"+(i+1)));
+        td.textContent=cellSubjects.map(s=>s.subject).join(" | ");
+        td.style.backgroundColor="#444";
+        tr.appendChild(td);
+      }
+    });
+    body.appendChild(tr);
+  });
+}
+
+// جداول التلاميذ: بدون فراغات + اعمال موجهة/تطبيقية
+function generateStudentTables(){
+  const container=document.getElementById("studentsTables");container.innerHTML="";
+  classes.forEach(cls=>{
+    for(let i=0;i<cls.count;i++){
+      let table=document.createElement("table");
+      let caption=document.createElement("caption");caption.textContent=cls.level+" م"+(i+1);table.appendChild(caption);
+
+      let thead=document.createElement("thead");let trHead=document.createElement("tr");trHead.innerHTML="<th>اليوم/الحصة</th>";for(let h=1;h<=6;h++) trHead.innerHTML+="<th>حصة "+h+"</th>";thead.appendChild(trHead);table.appendChild(thead);
+
+      let tbody=document.createElement("tbody");
+      let days=["الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"];
+      days.forEach(day=>{
+        let tr=document.createElement("tr");
+        let tdDay=document.createElement("td");tdDay.textContent=day;tr.appendChild(tdDay);
+        for(let h=1;h<=6;h++){
+          let td=document.createElement("td");
+          let cellSubjects=teachers.filter(t=>t.sections.includes(cls.level+" م"+(i+1)));
+          let subj=todaySmartSubject(cellSubjects,h);
+          td.textContent=subj.text;
+          td.style.backgroundColor=subj.color;
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);container.appendChild(table);
+    }
+  });
+}
+
+// اختيار مادة ذكي: استدراك/أعمال/تفويج
+function todaySmartSubject(arr,h){
+  let sub=arr[Math.floor(Math.random()*arr.length)];
+  let text=sub.subject;
+  // اعمال موجهة للمواد الأساسية
+  if(sub.subject==="العربية"||sub.subject==="الرياضيات"||sub.subject==="الفرنسية"||sub.subject==="الإنجليزية"){
+    if(h==5) text+=" (أعمال موجهة)";
+  }
+  // اعمال تطبيقية
+  if(sub.subject==="العلوم"||sub.subject==="الفيزياء"){
+    if(h==4) text+=" (تطبيقية)";
+  }
+  return {text:text,color:sub.color};
+}
+
+// PDF / Word
+function downloadPDF(){alert("PDF جاهز للاضافة عبر jsPDF");}
+function downloadWord(){alert("Word جاهز للاضافة عبر docx.js");}
+
+</script>
 </body>
 </html>

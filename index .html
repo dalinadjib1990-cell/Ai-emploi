@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>AI Dali Emploi CEM</title>
+<style>
+  body { font-family: Arial; background: #f4f4f4; }
+  table { border-collapse: collapse; margin: 10px; width: 90%; }
+  th, td { border: 1px solid #999; padding: 5px; text-align: center; }
+  th { background: #333; color: white; }
+  button { margin: 5px; padding: 10px; cursor: pointer; }
+  .math { background-color: #ffeb3b; }
+  .arabic { background-color: #ff9800; }
+  .french { background-color: #03a9f4; }
+  .science { background-color: #8bc34a; }
+  .physics { background-color: #e91e63; }
+  .free { background-color: #ccc; }
+</style>
+</head>
+<body>
+
+<h2>AI Dali Emploi CEM</h2>
+
+<button onclick="fillSchool()">زر مؤسستي</button>
+<button onclick="resetTables()">إعادة تعيين</button>
+<button onclick="generateTables()">توليد جديد</button>
+
+<div id="tables"></div>
+
+<script>
+// معطيات المؤسسة
+const sections = [
+  {name: "سنة اولى", count: 5},
+  {name: "سنة ثانية", count: 4},
+  {name: "سنة ثالثة", count: 3},
+  {name: "سنة رابعة", count: 2}
+];
+
+const teachers = [
+  {name: "دالي", subjects: ["رياضيات", "فيزياء"], maxHours: 18},
+  {name: "أحمد", subjects: ["عربية", "فرنسية"], maxHours: 20},
+  {name: "ليلى", subjects: ["علوم", "رياضيات"], maxHours: 18},
+  {name: "سمير", subjects: ["فيزياء", "علوم"], maxHours: 18},
+  {name: "سعاد", subjects: ["فرنسية", "إنجليزية"], maxHours: 20},
+  {name: "علي", subjects: ["رياضيات"], maxHours: 15},
+  {name: "نور", subjects: ["عربية"], maxHours: 15},
+  {name: "هالة", subjects: ["علوم"], maxHours: 12},
+  {name: "يوسف", subjects: ["فيزياء"], maxHours: 12},
+  {name: "رشيد", subjects: ["فرنسية"], maxHours: 10},
+  {name: "منى", subjects: ["إنجليزية"], maxHours: 10},
+  {name: "سليم", subjects: ["رياضيات"], maxHours: 12},
+  {name: "جميلة", subjects: ["عربية"], maxHours: 12},
+  {name: "نادر", subjects: ["علوم"], maxHours: 12},
+  {name: "فؤاد", subjects: ["فيزياء"], maxHours: 12},
+  {name: "ريم", subjects: ["فرنسية"], maxHours: 10},
+  {name: "سلمى", subjects: ["إنجليزية"], maxHours: 10},
+  {name: "كمال", subjects: ["رياضيات"], maxHours: 12},
+  {name: "مريم", subjects: ["عربية"], maxHours: 12},
+  {name: "هشام", subjects: ["علوم"], maxHours: 12},
+  {name: "فاطمة", subjects: ["فيزياء"], maxHours: 12},
+  {name: "أمين", subjects: ["فرنسية"], maxHours: 10},
+  {name: "ليلى", subjects: ["إنجليزية"], maxHours: 10},
+  {name: "رشا", subjects: ["رياضيات"], maxHours: 12},
+  {name: "سعيد", subjects: ["عربية"], maxHours: 12},
+  {name: "نجلاء", subjects: ["علوم"], maxHours: 12},
+  {name: "أيمن", subjects: ["فيزياء"], maxHours: 12}
+];
+
+// المواد والألوان
+const subjectColors = {
+  "رياضيات": "math",
+  "عربية": "arabic",
+  "فرنسية": "french",
+  "علوم": "science",
+  "فيزياء": "physics",
+  "إنجليزية": "french"
+};
+
+// أيام الأسبوع
+const days = ["السبت","الأحد","الإثنين","الثلاثاء","الأربعاء"];
+
+// جداول
+let schoolTable = [];
+let sectionTables = [];
+let teacherTables = [];
+
+// دالة لإعادة التعيين
+function resetTables() {
+  schoolTable = [];
+  sectionTables = [];
+  teacherTables = [];
+  document.getElementById("tables").innerHTML = "";
+}
+
+// دالة لتوليد جدول المدرسة
+function generateTables() {
+  resetTables();
+
+  // تهيئة جداول الأقسام
+  sections.forEach(sec => {
+    for(let i=0; i<sec.count; i++) {
+      sectionTables.push({name: sec.name+"-"+(i+1), table: Array(days.length).fill(0).map(()=>Array(6).fill(""))});
+    }
+  });
+
+  // تهيئة جداول الأساتذة
+  teachers.forEach(t => {
+    teacherTables.push({name: t.name, table: Array(days.length).fill(0).map(()=>Array(6).fill(""))});
+  });
+
+  // توزيع الحصص على الأقسام بشكل ذكي
+  sectionTables.forEach(section => {
+    let assignedHours = {};
+    teachers.forEach(t => t.subjects.forEach(sub => assignedHours[sub] = 0));
+    for(let d=0; d<days.length; d++){
+      for(let h=0; h<6; h++){
+        // اختر مادة عشوائية لم تُملأ بعد في هذا القسم
+        let availableSubjects = Object.keys(assignedHours).filter(s => assignedHours[s]<3);
+        let sub = availableSubjects[Math.floor(Math.random()*availableSubjects.length)];
+        section.table[d][h] = sub;
+        assignedHours[sub]++;
+      }
+    }
+  });
+
+  displayTables();
+}
+
+// دالة لملء المؤسسة تلقائيًا
+function fillSchool() {
+  generateTables(); // التوليد الذكي يملأ جميع الجداول
+}
+
+// دالة عرض الجداول
+function displayTables() {
+  let html = "";
+  sectionTables.forEach(sec => {
+    html += "<h3>جدول "+sec.name+"</h3><table><tr><th>اليوم/ساعة</th>";
+    for(let h=1; h<=6; h++) html+="<th>"+h+"</th>";
+    html+="</tr>";
+    for(let d=0; d<days.length; d++){
+      html += "<tr><th>"+days[d]+"</th>";
+      for(let h=0; h<6; h++){
+        let sub = sec.table[d][h];
+        html += "<td class='"+subjectColors[sub]+"'>"+sub+"</td>";
+      }
+      html += "</tr>";
+    }
+    html += "</table>";
+  });
+  document.getElementById("tables").innerHTML = html;
+}
+</script>
+
+</body>
+</html>

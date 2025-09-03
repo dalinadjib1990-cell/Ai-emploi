@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Prof Dali Nadjib</title>
+<title>AI Prof Dali Nadjib - جدول المؤسسة</title>
 <style>
 body {
     background-color: #121212;
@@ -22,32 +22,10 @@ header {
     color: #00ffcc;
 }
 .container { padding: 20px; }
-input, select, button {
-    margin: 5px 0;
-    padding: 6px;
-    border-radius: 5px;
-    border: none;
-    font-size: 16px;
-}
-button {
-    cursor: pointer;
-    background: #00ffcc;
-    color: #121212;
-    font-weight: bold;
-    margin-right: 5px;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    table-layout: fixed;
-}
-th, td {
-    border: 1px solid #444;
-    padding: 6px;
-    text-align: center;
-    word-wrap: break-word;
-}
+input, select, button { margin: 5px 0; padding: 6px; border-radius: 5px; border: none; font-size: 16px; }
+button { cursor: pointer; background: #00ffcc; color: #121212; font-weight: bold; margin-right: 5px; }
+table { width: 100%; border-collapse: collapse; margin-top: 15px; table-layout: fixed; }
+th, td { border: 1px solid #444; padding: 6px; text-align: center; word-wrap: break-word; }
 th { background-color: #333; }
 td[contenteditable="true"] { background-color: #222; }
 h3 { margin-top: 25px; }
@@ -56,7 +34,7 @@ h3 { margin-top: 25px; }
 </head>
 <body>
 
-<header>AI Prof Dali Nadjib</header>
+<header>AI Prof Dali Nadjib - جدول المؤسسة</header>
 <div class="container">
 <h3>إعدادات المؤسسة</h3>
 <label>اسم المؤسسة:</label>
@@ -72,18 +50,17 @@ h3 { margin-top: 25px; }
 <button onclick="generateAll(true)">احتمالية جديدة</button>
 </div>
 
-<h3>جدول الأساتذة (ستة أيام)</h3>
+<h3>جدول الأساتذة</h3>
 <table id="teacherTable">
 <thead>
 <tr>
 <th>الأستاذ</th>
 <th>المادة</th>
-<th>أحد</th>
-<th>اثنين</th>
-<th>ثلاثاء</th>
-<th>أربعاء</th>
-<th>خميس</th>
-<th>جمعة</th>
+<th>الأحد</th>
+<th>الاثنين</th>
+<th>الثلاثاء</th>
+<th>الأربعاء</th>
+<th>الخميس</th>
 <th>إجراء</th>
 </tr>
 </thead>
@@ -91,70 +68,79 @@ h3 { margin-top: 25px; }
 </table>
 <button onclick="addTeacher()">إضافة أستاذ</button>
 
-<h3>جدول التلاميذ لكل قسم</h3>
+<h3>جدول التلاميذ</h3>
 <table id="studentTable">
 <thead>
 <tr>
 <th>القسم</th>
-<th>الحصة 1 (8:00-9:00)</th>
-<th>الحصة 2 (9:00-10:00)</th>
-<th>الحصة 3 (10:00-11:00)</th>
-<th>الحصة 4 (11:00-12:00)</th>
-<th>الحصة 5 (13:00-14:00)</th>
-<th>الحصة 6 (14:00-15:00)</th>
+<th>الأحد 1</th>
+<th>الأحد 2</th>
+<th>الأحد 3</th>
+<th>الأحد 4</th>
+<th>الأحد 5</th>
+<th>الأحد 6</th>
+<th>الاثنين 1</th>
+<th>الاثنين 2</th>
+<th>الاثنين 3</th>
+<th>الاثنين 4</th>
+<th>الاثنين 5</th>
+<th>الاثنين 6</th>
+<th>الثلاثاء 1</th>
+<th>الثلاثاء 2</th>
+<th>الثلاثاء 3</th>
+<th>الثلاثاء 4</th>
+<th>الثلاثاء 5</th>
+<th>الثلاثاء 6</th>
+<th>الأربعاء 1</th>
+<th>الأربعاء 2</th>
+<th>الأربعاء 3</th>
+<th>الأربعاء 4</th>
+<th>الأربعاء 5</th>
+<th>الأربعاء 6</th>
+<th>الخميس 1</th>
+<th>الخميس 2</th>
+<th>الخميس 3</th>
+<th>الخميس 4</th>
+<th>الخميس 5</th>
+<th>الخميس 6</th>
 </tr>
 </thead>
 <tbody></tbody>
 </table>
 
-<h3>الجدول الكلي للمؤسسة</h3>
-<table id="schoolTable">
-<thead>
-<tr>
-<th>اليوم</th>
-<th>الحصة 1</th>
-<th>الحصة 2</th>
-<th>الحصة 3</th>
-<th>الحصة 4</th>
-<th>الحصة 5</th>
-<th>الحصة 6</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
 </div>
 
 <script>
 // ======= بيانات الأساتذة الافتراضية =======
 const defaultTeachers = [
-{name:"دالي نجيب",subject:"رياضيات",classes:[1,2,3,4],hours:20},
-{name:"بن بارش منيرة",subject:"رياضيات",classes:[1,2,3,4],hours:20},
-{name:"رقيق رمزي",subject:"رياضيات",classes:[1,2,3,4],hours:20},
-{name:"اللغة غريبة",subject:"عربية",classes:[1,2,3,4],hours:20},
-{name:"مروة",subject:"عربية",classes:[1,2,3,4],hours:20},
-{name:"صبرينة",subject:"عربية",classes:[1,2,3,4],hours:20},
-{name:"أسيا",subject:"عربية",classes:[1,2,3,4],hours:20},
-{name:"زينب",subject:"فرنسية",classes:[1,2,3,4],hours:16},
-{name:"سعيدة",subject:"فرنسية",classes:[1,2,3,4],hours:16},
-{name:"العيد",subject:"فرنسية",classes:[1,2,3,4],hours:16},
-{name:"سارة",subject:"إنجليزية",classes:[1,2,3,4],hours:8},
-{name:"سلمى",subject:"إنجليزية",classes:[1,2,3,4],hours:8},
-{name:"بوبكر",subject:"علوم طبيعية",classes:[1,2,3,4],hours:8},
-{name:"هشام",subject:"علوم طبيعية",classes:[1,2,3,4],hours:8},
-{name:"أمينة",subject:"علوم طبيعية",classes:[1,2,3,4],hours:8},
-{name:"وسيلة",subject:"فيزياء",classes:[1,2,3,4],hours:8},
-{name:"فتيحة",subject:"فيزياء",classes:[1,2,3,4],hours:8},
-{name:"عبد الرزاق",subject:"علوم فيزيائية",classes:[1,2,3,4],hours:8},
-{name:"بلوطار",subject:"علوم فيزيائية",classes:[1,2,3,4],hours:8},
-{name:"شيماء",subject:"علوم فيزيائية",classes:[1,2,3,4],hours:8},
-{name:"علاء",subject:"رياضة",classes:[1,2,3,4],hours:8},
-{name:"خير الدين",subject:"رياضة",classes:[1,2,3,4],hours:8},
-{name:"سهام",subject:"تربية اسلامية",classes:[1,2,3,4],hours:4},
-{name:"شهرة",subject:"اعلام الي",classes:[1,2,3,4],hours:8},
-{name:"سيف",subject:"رسم",classes:[1,2,3,4],hours:4},
-{name:"وداد",subject:"تاريخ وجغرافيا وتربية مدنية",classes:[1,2,3,4],hours:8},
-{name:"عائشة",subject:"تاريخ وجغرافيا وتربية مدنية",classes:[1,2,3,4],hours:8},
-{name:"فاطمة",subject:"تاريخ وجغرافيا وتربية مدنية",classes:[1,2,3,4],hours:8}
+{name:"دالي نجيب",subject:"رياضيات",classes:[1,2,3,4],days:[0,4]},
+{name:"بن بارش منيرة",subject:"رياضيات",classes:[1,2,3,4],days:[0,4]},
+{name:"رقيق رمزي",subject:"رياضيات",classes:[1,2,3,4],days:[0,4]},
+{name:"اللغة غريبة",subject:"عربية",classes:[1,2,3,4],days:[1,2]},
+{name:"مروة",subject:"عربية",classes:[1,2,3,4],days:[1,2]},
+{name:"صبرينة",subject:"عربية",classes:[1,2,3,4],days:[1,2]},
+{name:"أسيا",subject:"عربية",classes:[1,2,3,4],days:[1,2]},
+{name:"زينب",subject:"فرنسية",classes:[1,2,3,4],days:[2]},
+{name:"سعيدة",subject:"فرنسية",classes:[1,2,3,4],days:[2]},
+{name:"العيد",subject:"فرنسية",classes:[1,2,3,4],days:[2]},
+{name:"سارة",subject:"إنجليزية",classes:[1,2,3,4],days:[2]},
+{name:"سلمى",subject:"إنجليزية",classes:[1,2,3,4],days:[2]},
+{name:"بوبكر",subject:"علوم طبيعية",classes:[1,2,3,4],days:[3]},
+{name:"هشام",subject:"علوم طبيعية",classes:[1,2,3,4],days:[3]},
+{name:"أمينة",subject:"علوم طبيعية",classes:[1,2,3,4],days:[3]},
+{name:"وسيلة",subject:"فيزياء",classes:[1,2,3,4],days:[3]},
+{name:"فتيحة",subject:"فيزياء",classes:[1,2,3,4],days:[3]},
+{name:"عبد الرزاق",subject:"علوم فيزيائية",classes:[1,2,3,4],days:[3]},
+{name:"بلوطار",subject:"علوم فيزيائية",classes:[1,2,3,4],days:[3]},
+{name:"شيماء",subject:"علوم فيزيائية",classes:[1,2,3,4],days:[3]},
+{name:"علاء",subject:"رياضة",classes:[1,2,3,4],days:[2]},
+{name:"خير الدين",subject:"رياضة",classes:[1,2,3,4],days:[2]},
+{name:"سهام",subject:"تربية اسلامية",classes:[1,2,3,4],days:[1]},
+{name:"شهرة",subject:"اعلام الي",classes:[1,2,3,4],days:[2]},
+{name:"سيف",subject:"رسم",classes:[1,2,3,4],days:[4]},
+{name:"وداد",subject:"تاريخ وجغرافيا وتربية مدنية",classes:[1,2,3,4],days:[0]},
+{name:"عائشة",subject:"تاريخ وجغرافيا وتربية مدنية",classes:[1,2,3,4],days:[0]},
+{name:"فاطمة",subject:"تاريخ وجغرافيا وتربية مدنية",classes:[1,2,3,4],days:[0]}
 ];
 
 // ======= دوال التفاعل =======
@@ -162,33 +148,25 @@ function deleteRow(btn){ btn.parentElement.parentElement.remove(); }
 function addTeacher(){
     const tbody = document.querySelector("#teacherTable tbody");
     const tr = document.createElement("tr");
-    tr.innerHTML = `
-    <td contenteditable>أدخل الاسم</td>
+    tr.innerHTML = `<td contenteditable>أدخل الاسم</td>
     <td contenteditable>المادة</td>
-    <td contenteditable></td>
-    <td contenteditable></td>
-    <td contenteditable></td>
-    <td contenteditable></td>
-    <td contenteditable></td>
-    <td contenteditable></td>
-    <td><button onclick="deleteRow(this)">حذف</button></td>
-    `;
+    <td contenteditable></td><td contenteditable></td><td contenteditable></td>
+    <td contenteditable></td><td contenteditable></td>
+    <td><button onclick="deleteRow(this)">حذف</button></td>`;
     tbody.appendChild(tr);
 }
 function resetSchool(){
     document.querySelector("#teacherTable tbody").innerHTML="";
     document.querySelector("#studentTable tbody").innerHTML="";
-    document.querySelector("#schoolTable tbody").innerHTML="";
 }
 function fillSchool(){
     const tbody = document.querySelector("#teacherTable tbody");
     tbody.innerHTML = "";
     defaultTeachers.forEach(t=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td contenteditable>${t.name}</td>
-        <td contenteditable>${t.subject}</td>
+        const tr=document.createElement("tr");
+        tr.innerHTML=`<td contenteditable>${t.name}</td><td contenteditable>${t.subject}</td>
         <td contenteditable></td><td contenteditable></td><td contenteditable></td>
-        <td contenteditable></td><td contenteditable></td><td contenteditable></td>
+        <td contenteditable></td><td contenteditable></td>
         <td><button onclick="deleteRow(this)">حذف</button></td>`;
         tbody.appendChild(tr);
     });
@@ -199,15 +177,14 @@ function fillSchool(){
 function generateAll(random=false){
     generateTeacherSchedule();
     generateStudentSchedule();
-    generateSchoolSchedule();
 }
 
 // توليد جدول الأستاذ مع الأقسام
 function generateTeacherSchedule(){
-    const tbody = document.querySelector("#teacherTable tbody");
+    const tbody=document.querySelector("#teacherTable tbody");
     Array.from(tbody.rows).forEach(row=>{
-        for(let i=2;i<=7;i++){
-            // لكل يوم، توزيع الأقسام عشوائياً (يمكن تطويره حسب المنطق)
+        for(let i=2;i<=6;i++){
+            // اختيار عشوائي من الأقسام المسندة له
             row.cells[i].innerText = "القسم 1, القسم 2";
         }
     });
@@ -215,32 +192,17 @@ function generateTeacherSchedule(){
 
 // توليد جدول التلاميذ
 function generateStudentSchedule(){
-    const tbody = document.querySelector("#studentTable tbody");
+    const tbody=document.querySelector("#studentTable tbody");
     tbody.innerHTML="";
-    const numClasses = parseInt(document.getElementById("numClasses").value)||13;
+    const numClasses=parseInt(document.getElementById("numClasses").value)||13;
     for(let c=1;c<=numClasses;c++){
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>القسم ${c}</td>`;
-        for(let p=1;p<=6;p++){
-            // اختيار مادة وأستاذ عشوائي (يمكن تحسينه لاحقاً)
-            let t = defaultTeachers[Math.floor(Math.random()*defaultTeachers.length)];
-            tr.innerHTML += `<td contenteditable>${t.subject} (${t.name})</td>`;
-        }
-        tbody.appendChild(tr);
-    }
-}
-
-// توليد الجدول الكلي للمؤسسة
-function generateSchoolSchedule(){
-    const tbody = document.querySelector("#schoolTable tbody");
-    tbody.innerHTML="";
-    const days=["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"];
-    for(let d=0;d<days.length;d++){
         const tr=document.createElement("tr");
-        tr.innerHTML=`<td>${days[d]}</td>`;
-        for(let p=1;p<=6;p++){
-            let t=defaultTeachers[Math.floor(Math.random()*defaultTeachers.length)];
-            tr.innerHTML += `<td contenteditable>${t.subject} (${t.name})</td>`;
+        tr.innerHTML=`<td>القسم ${c}</td>`;
+        for(let d=0;d<5;d++){
+            for(let p=0;p<6;p++){
+                let t=defaultTeachers[Math.floor(Math.random()*defaultTeachers.length)];
+                tr.innerHTML+=`<td contenteditable>${t.subject} (${t.name})</td>`;
+            }
         }
         tbody.appendChild(tr);
     }

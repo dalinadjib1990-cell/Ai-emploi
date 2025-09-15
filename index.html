@@ -721,14 +721,15 @@
 
         const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
 
-        // CORRECTED Subject Hours per Level (Official Algerian Curriculum)
+        // CORRECTED: Basic Subject Hours ONLY (without guided/practical work)
         const subjectHours = {
-            'اللغة العربية': [6, 5, 5, 6], // 6 حصص للأولى والرابعة
-            'اللغة الفرنسية': [3, 3, 3, 3], // 3 حصص لجميع السنوات
-            'اللغة الإنجليزية': [3, 3, 4, 4], // 3 للأولى والثانية، 4 للثالثة والرابعة
-            'رياضيات': [6, 5, 5, 6], // 6 حصص للأولى والرابعة
-            'العلوم الطبيعية': [2, 2, 2, 2],
-            'العلوم الفيزيائية': [2, 2, 2, 2],
+            // الساعات الأساسية فقط (بدون أعمال موجهة أو تطبيقية)
+            'اللغة العربية': [5, 5, 5, 6], // الساعات الأساسية فقط
+            'اللغة الفرنسية': [3, 3, 3, 3], // الساعات الأساسية فقط
+            'اللغة الإنجليزية': [3, 3, 4, 4], // الساعات الأساسية فقط
+            'رياضيات': [5, 5, 5, 6], // الساعات الأساسية فقط
+            'العلوم الطبيعية': [2, 2, 2, 2], // الساعات الأساسية فقط
+            'العلوم الفيزيائية': [2, 2, 2, 2], // الساعات الأساسية فقط
             'التاريخ والجغرافيا': [2, 2, 2, 2],
             'التربية الإسلامية': [1, 1, 1, 1],
             'التربية المدنية': [1, 1, 1, 1], // موزعة على أساتذة التاريخ
@@ -1226,7 +1227,7 @@
             let scheduledHours = 0;
             const subjectDailyCount = {};
             
-            // Collect all available slots
+            // Collect all available slots with priority system
             const availableSlots = [];
             days.forEach(day => {
                 const daySlots = day === 'الثلاثاء' ? tuesdaySlots : timeSlots.filter(slot => slot !== remedialSlot);
@@ -1238,40 +1239,74 @@
             // Shuffle slots for randomization
             availableSlots.sort(() => randomFunc() - 0.5);
 
+            // FORCE scheduling of exact hours - relaxed constraints if needed
             for (const { day, slot } of availableSlots) {
                 if (scheduledHours >= hoursNeeded) break;
 
-                // Check availability and constraints
+                // Check basic availability
                 if (studentSchedule[day][slot].type === 'empty' && 
                     teacherSchedule[day][slot].type === 'empty') {
                     
-                    // Check daily limit (max 2 times per day)
+                    // Try with constraints first
                     const dailyKey = `${day}_${subject}`;
-                    if ((subjectDailyCount[dailyKey] || 0) < 2) {
-                        
-                        // Check for non-consecutive constraint
-                        if (!wouldCreateConsecutive(studentSchedule, subject, day, slot)) {
-                            
-                            // Schedule the lesson
-                            studentSchedule[day][slot] = {
-                                subject: subject,
-                                teacher: teacherName,
-                                type: 'regular',
-                                content: `${subject}\n${teacherName}`
-                            };
+                    const dailyCount = subjectDailyCount[dailyKey] || 0;
+                    const wouldBeConsecutive = wouldCreateConsecutive(studentSchedule, subject, day, slot);
+                    
+                    // If we can schedule with constraints, do it
+                    if (dailyCount < 2 && !wouldBeConsecutive) {
+                        studentSchedule[day][slot] = {
+                            subject: subject,
+                            teacher: teacherName,
+                            type: 'regular',
+                            content: `${subject}\n${teacherName}`
+                        };
 
-                            teacherSchedule[day][slot] = {
-                                subject: subject,
-                                teacher: className,
-                                type: 'teaching',
-                                content: `${subject} - ${className}`
-                            };
+                        teacherSchedule[day][slot] = {
+                            subject: subject,
+                            teacher: className,
+                            type: 'teaching',
+                            content: `${subject} - ${className}`
+                        };
 
-                            scheduledHours++;
-                            subjectDailyCount[dailyKey] = (subjectDailyCount[dailyKey] || 0) + 1;
-                        }
+                        scheduledHours++;
+                        subjectDailyCount[dailyKey] = dailyCount + 1;
                     }
                 }
+            }
+            
+            // If we couldn't schedule enough hours with constraints, relax them
+            if (scheduledHours < hoursNeeded) {
+                for (const { day, slot } of availableSlots) {
+                    if (scheduledHours >= hoursNeeded) break;
+
+                    if (studentSchedule[day][slot].type === 'empty' && 
+                        teacherSchedule[day][slot].type === 'empty') {
+                        
+                        // Force schedule remaining hours
+                        studentSchedule[day][slot] = {
+                            subject: subject,
+                            teacher: teacherName,
+                            type: 'regular',
+                            content: `${subject}\n${teacherName}`
+                        };
+
+                        teacherSchedule[day][slot] = {
+                            subject: subject,
+                            teacher: className,
+                            type: 'teaching',
+                            content: `${subject} - ${className}`
+                        };
+
+                        scheduledHours++;
+                        const dailyKey = `${day}_${subject}`;
+                        subjectDailyCount[dailyKey] = (subjectDailyCount[dailyKey] || 0) + 1;
+                    }
+                }
+            }
+            
+            // Log any discrepancy for debugging
+            if (scheduledHours < hoursNeeded) {
+                console.warn(`Could only schedule ${scheduledHours}/${hoursNeeded} hours for ${subject} in ${className} with teacher ${teacherName}`);
             }
         }
 
